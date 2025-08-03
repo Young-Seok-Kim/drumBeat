@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".MainActivity">
 
-    <!-- 네 칸 숫자 TextView 가로 배치 -->
+    <!-- 네 칸 (TextView + ImageView) 수평 배치 -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,52 +16,89 @@
         android:gravity="center"
         android:layout_marginBottom="24dp">
 
-        <TextView
-            android:id="@+id/number1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:text="0"
-            android:textSize="32sp"
+        <!-- 첫 번째 칸 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp">
 
-        <TextView
-            android:id="@+id/number2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:text="0"
-            android:textSize="32sp"
-            android:gravity="center"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:layout_margin="8dp" />
+            <TextView
+                android:id="@+id/number1"
+                android:text="0"
+                style="@style/NumberTextView" />
 
-        <TextView
-            android:id="@+id/number3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:text="0"
-            android:textSize="32sp"
-            android:gravity="center"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:layout_margin="8dp" />
+            <ImageView
+                android:id="@+id/image1"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 1"
+                tools:src="@drawable/beat1" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/number4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:text="0"
-            android:textSize="32sp"
+        <!-- 두 번째 칸 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:gravity="center"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/number2"
+                android:text="0"
+                style="@style/NumberTextView"/>
+
+            <ImageView
+                android:id="@+id/image2"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 2"
+                tools:src="@drawable/beat1" />
+        </LinearLayout>
+
+        <!-- 세 번째 칸 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/number3"
+                android:text="0"
+                style="@style/NumberTextView" />
+
+            <ImageView
+                android:id="@+id/image3"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 3"
+                tools:src="@drawable/beat1" />
+        </LinearLayout>
+
+        <!-- 네 번째 칸 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="8dp">
+
+            <TextView
+                android:id="@+id/number4"
+                android:text="0"
+                style="@style/NumberTextView" />
+
+            <ImageView
+                android:id="@+id/image4"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 4"
+                tools:src="@drawable/beat1" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <!-- 시간 입력 (1~10초) -->
+    <!-- 시간 입력 -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
