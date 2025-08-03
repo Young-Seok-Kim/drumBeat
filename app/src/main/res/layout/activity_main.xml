@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -8,26 +9,28 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-    <!-- 네 칸 (TextView + ImageView) 수평 배치 -->
+    <!-- 네 칸 수평 배치 -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginBottom="24dp">
 
-        <!-- 첫 번째 칸 -->
+        <!-- 각 칸 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_margin="8dp">
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/number1"
                 android:text="0"
-                style="@style/NumberTextView" />
+                style="@style/NumberTextView"
+                tools:text="12" />
 
             <ImageView
                 android:id="@+id/image1"
@@ -36,18 +39,19 @@
                 tools:src="@drawable/beat1" />
         </LinearLayout>
 
-        <!-- 두 번째 칸 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_margin="8dp">
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/number2"
                 android:text="0"
-                style="@style/NumberTextView"/>
+                style="@style/NumberTextView"
+                tools:text="5" />
 
             <ImageView
                 android:id="@+id/image2"
@@ -56,18 +60,19 @@
                 tools:src="@drawable/beat1" />
         </LinearLayout>
 
-        <!-- 세 번째 칸 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_margin="8dp">
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/number3"
                 android:text="0"
-                style="@style/NumberTextView" />
+                style="@style/NumberTextView"
+                tools:text="16" />
 
             <ImageView
                 android:id="@+id/image3"
@@ -76,18 +81,19 @@
                 tools:src="@drawable/beat1" />
         </LinearLayout>
 
-        <!-- 네 번째 칸 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_margin="8dp">
+            android:layout_margin="4dp">
 
             <TextView
                 android:id="@+id/number4"
                 android:text="0"
-                style="@style/NumberTextView" />
+                style="@style/NumberTextView"
+                tools:text="8" />
 
             <ImageView
                 android:id="@+id/image4"
@@ -98,12 +104,33 @@
 
     </LinearLayout>
 
+    <!-- 남은 시간 표시 텍스트뷰 추가 -->
+    <TextView
+        android:id="@+id/textViewRemainingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/RemainingTimeTextView"
+        android:text="남은 시간: -" />
+
+    <!-- ProgressBar: 남은 시간 시각 바 -->
+    <ProgressBar
+        android:id="@+id/progressBarTimer"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:max="100"
+        android:progress="100"
+        android:progressTint="@color/purple_500"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"/>
+
     <!-- 시간 입력 -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp">
 
         <TextView
@@ -124,11 +151,31 @@
             android:ems="3" />
     </LinearLayout>
 
-    <!-- 랜덤 숫자 갱신 버튼 -->
-    <Button
-        android:id="@+id/buttonRandom"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="랜덤 숫자 생성" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:spacing="12dp">
+
+        <Button
+            android:id="@+id/buttonStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시작" />
+
+        <View
+            android:layout_width="12dp"
+            android:layout_height="0dp" />
+
+        <Button
+            android:id="@+id/buttonStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="중지" />
+    </LinearLayout>
+
 
 </LinearLayout>

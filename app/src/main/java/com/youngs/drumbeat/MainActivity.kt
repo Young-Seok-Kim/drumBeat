@@ -14,12 +14,32 @@ class MainActivity : AppCompatActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
     private var intervalSeconds: Int = 3
+    private var remainingTimeSeconds: Int = 0
+    private var isRunning = false // 실행 중인지 상태 체크용
 
-    // 반복 실행되는 Runnable 객체
     private val updateRunnable = object : Runnable {
         override fun run() {
             setRandomNumbersAndImages()
+            remainingTimeSeconds = intervalSeconds
+            updateRemainingTimeText()
+            updateProgressBar()
+
+            handler.postDelayed(countdownRunnable, 1000L)
             handler.postDelayed(this, intervalSeconds * 1000L)
+        }
+    }
+
+    private val countdownRunnable = object : Runnable {
+        override fun run() {
+            if (remainingTimeSeconds > 0 && isRunning) {
+                remainingTimeSeconds--
+                updateRemainingTimeText()
+                updateProgressBar()
+                handler.postDelayed(this, 1000L)
+            } else if(remainingTimeSeconds <= 0) {
+                binding.textViewRemainingTime.text = "남은 시간: 0초"
+                binding.progressBarTimer?.progress = 0
+            }
         }
     }
 
@@ -29,10 +49,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 앱 시작 시 초기 값 세팅
-        setRandomNumbersAndImages()
+        binding.textViewRemainingTime.text = "남은 시간: -"
+        binding.progressBarTimer?.progress = 100
 
-        binding.buttonRandom.setOnClickListener {
+        // 시작 버튼 클릭
+        binding.buttonStart.setOnClickListener {
             val timeText = binding.editTextTime.text.toString()
             val seconds = timeText.toIntOrNull()
 
@@ -41,23 +62,54 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (isRunning) {
+                Toast.makeText(this, "이미 실행 중입니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             intervalSeconds = seconds
+            isRunning = true
 
-            // 기존 반복 작업 제거
-            handler.removeCallbacks(updateRunnable)
-
-            // 즉시 한 번 실행
             setRandomNumbersAndImages()
 
-            // 반복 작업 시작
+            remainingTimeSeconds = intervalSeconds
+            updateRemainingTimeText()
+            updateProgressBar()
+
+            handler.postDelayed(countdownRunnable, 1000L)
             handler.postDelayed(updateRunnable, intervalSeconds * 1000L)
 
             Toast.makeText(this, "$intervalSeconds 초마다 숫자와 이미지가 갱신됩니다.", Toast.LENGTH_SHORT).show()
         }
+
+        // 중지 버튼 클릭
+        binding.buttonStop.setOnClickListener {
+            if (!isRunning) {
+                Toast.makeText(this, "동작 중이 아닙니다.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            isRunning = false
+            handler.removeCallbacks(updateRunnable)
+            handler.removeCallbacks(countdownRunnable)
+            binding.textViewRemainingTime.text = "중지됨"
+            binding.progressBarTimer?.progress = 0
+            Toast.makeText(this, "동작이 중지되었습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updateRemainingTimeText() {
+        binding.textViewRemainingTime.text = "남은 시간: $remainingTimeSeconds 초"
+    }
+
+    private fun updateProgressBar() {
+        binding.progressBarTimer?.let { progressBar ->
+            val progressPercent = (remainingTimeSeconds.toFloat() / intervalSeconds.toFloat()) * 100
+            progressBar.progress = progressPercent.toInt()
+        }
     }
 
     private fun setRandomNumbersAndImages() {
-        val numbers = List(4) { (1..16).random() }
+        val numbers = List(4) { (1..16).random() }  // 1~16 랜덤
 
         val numberTextViews = listOf(binding.number1, binding.number2, binding.number3, binding.number4)
         val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
@@ -66,15 +118,10 @@ class MainActivity : AppCompatActivity() {
             val num = numbers[i]
             numberTextViews[i].text = num.toString()
 
-            if (num in 1..16) {
-                val imageResId = resources.getIdentifier("beat$num", "drawable", packageName)
-                if (imageResId != 0) {
-                    imageViews[i].setImageResource(imageResId)
-                } else {
-                    imageViews[i].setImageDrawable(null)
-                }
+            val imageResId = resources.getIdentifier("beat$num", "drawable", packageName)
+            if (imageResId != 0) {
+                imageViews[i].setImageResource(imageResId)
             } else {
-                // 숫자가 0이면 이미지뷰 비움
                 imageViews[i].setImageDrawable(null)
             }
         }
@@ -82,6 +129,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(updateRunnable) // 메모리 누수 방지
+        handler.removeCallbacks(updateRunnable)
+        handler.removeCallbacks(countdownRunnable)
     }
 }
