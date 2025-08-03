@@ -23,6 +23,14 @@ android {
             viewBinding = true
         }
 
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                def appName = android.defaultConfig.applicationId.tokenize('.').last()  // 패키지명 마지막 부분
+                def version = variant.versionName
+                outputFileName = "${appName}_${version}.apk"
+            }
+        }
+
     }
 
     buildTypes {
