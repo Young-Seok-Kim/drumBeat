@@ -1,47 +1,22 @@
 package com.youngs.drumbeat
 
+import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.CountDownTimer
+import android.util.AttributeSet
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.youngs.drumbeat.databinding.ActivityMainBinding
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val handler = Handler(Looper.getMainLooper())
     private var intervalSeconds: Int = 3
-    private var remainingTimeSeconds: Int = 0
     private var isRunning = false // 실행 중인지 상태 체크용
 
-    private val updateRunnable = object : Runnable {
-        override fun run() {
-            setRandomNumbersAndImages()
-            remainingTimeSeconds = intervalSeconds
-            updateRemainingTimeText()
-            updateProgressBar()
-
-            handler.postDelayed(countdownRunnable, 1000L)
-            handler.postDelayed(this, intervalSeconds * 1000L)
-        }
-    }
-
-    private val countdownRunnable = object : Runnable {
-        override fun run() {
-            if (remainingTimeSeconds > 0 && isRunning) {
-                remainingTimeSeconds--
-                updateRemainingTimeText()
-                updateProgressBar()
-                handler.postDelayed(this, 1000L)
-            } else if(remainingTimeSeconds <= 0) {
-                binding.textViewRemainingTime.text = "남은 시간: 0초"
-                binding.progressBarTimer?.progress = 0
-            }
-        }
-    }
+    private var countDownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +25,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.textViewRemainingTime.text = "남은 시간: -"
-        binding.progressBarTimer?.progress = 100
+        binding.progressBarTimer.progress = 100
+        setListener()
+        stopTimer()
+    }
 
-        // 시작 버튼 클릭
+    private fun setListener() {
         binding.buttonStart.setOnClickListener {
             val timeText = binding.editTextTime.text.toString()
             val seconds = timeText.toIntOrNull()
@@ -70,42 +48,66 @@ class MainActivity : AppCompatActivity() {
             intervalSeconds = seconds
             isRunning = true
 
-            setRandomNumbersAndImages()
-
-            remainingTimeSeconds = intervalSeconds
-            updateRemainingTimeText()
-            updateProgressBar()
-
-            handler.postDelayed(countdownRunnable, 1000L)
-            handler.postDelayed(updateRunnable, intervalSeconds * 1000L)
+            startTimer()
 
             Toast.makeText(this, "$intervalSeconds 초마다 숫자와 이미지가 갱신됩니다.", Toast.LENGTH_SHORT).show()
         }
 
-        // 중지 버튼 클릭
         binding.buttonStop.setOnClickListener {
             if (!isRunning) {
                 Toast.makeText(this, "동작 중이 아닙니다.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            isRunning = false
-            handler.removeCallbacks(updateRunnable)
-            handler.removeCallbacks(countdownRunnable)
-            binding.textViewRemainingTime.text = "중지됨"
-            binding.progressBarTimer?.progress = 0
+            stopTimer()
             Toast.makeText(this, "동작이 중지되었습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun updateRemainingTimeText() {
-        binding.textViewRemainingTime.text = "남은 시간: $remainingTimeSeconds 초"
+    private fun startTimer() {
+        // 첫 갱신 즉시 실행
+        setViewsVisible(true)
+        setRandomNumbersAndImages()
+        updateRemainingTimeText(intervalSeconds)
+        updateProgressBar(intervalSeconds, intervalSeconds)
+
+        countDownTimer?.cancel()
+        countDownTimer = object : CountDownTimer((intervalSeconds * 1000).toLong(), 1000L) {
+            override fun onTick(millisUntilFinished: Long) {
+                val remainingSec = ((millisUntilFinished + 999) / 1000).toInt()  // 올림 처리
+                updateRemainingTimeText(remainingSec)
+                updateProgressBar(remainingSec, intervalSeconds)
+            }
+
+            override fun onFinish() {
+                updateRemainingTimeText(0)
+                updateProgressBar(0, intervalSeconds)
+                if (isRunning) {
+                    setRandomNumbersAndImages()
+                    startTimer()
+                }
+            }
+        }.start()
+
     }
 
-    private fun updateProgressBar() {
-        binding.progressBarTimer?.let { progressBar ->
-            val progressPercent = (remainingTimeSeconds.toFloat() / intervalSeconds.toFloat()) * 100
-            progressBar.progress = progressPercent.toInt()
-        }
+    private fun stopTimer() {
+        isRunning = false
+        countDownTimer?.cancel()
+        binding.textViewRemainingTime.text = "중지됨"
+        binding.progressBarTimer.progress = 0
+
+        setViewsVisible(false)
+    }
+
+    private fun updateRemainingTimeText(remainingSec: Int) {
+        binding.textViewRemainingTime.text = "남은 시간: $remainingSec 초"
+    }
+
+    private fun updateProgressBar(remainingSec: Int, totalSec: Int) {
+        val progressPercent = if (totalSec > 0) {
+            (remainingSec.toFloat() / totalSec.toFloat() * 100).toInt()
+        } else 0
+        binding.progressBarTimer.progress = progressPercent
     }
 
     private fun setRandomNumbersAndImages() {
@@ -127,9 +129,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setViewsVisible(visible: Boolean) {
+        val visibility = if (visible) android.view.View.VISIBLE else android.view.View.GONE
+
+        val numberTextViews = listOf(binding.number1, binding.number2, binding.number3, binding.number4)
+        val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
+
+        numberTextViews.forEach { it.visibility = visibility }
+        imageViews.forEach { it.visibility = visibility }
+    }
+
+
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(updateRunnable)
-        handler.removeCallbacks(countdownRunnable)
+        countDownTimer?.cancel()
     }
 }

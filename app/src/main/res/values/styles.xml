@@ -2,20 +2,25 @@
 <resources>
 
     <style name="NumberTextView">
-        <item name="android:layout_width">@dimen/number_text_width</item>
-        <item name="android:layout_height">@dimen/number_text_height</item>
-        <item name="android:textSize">@dimen/number_text_size</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item> <!-- weight와 같이 쓰려면 0dp -->
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:autoSizeMinTextSize">8sp</item>
+        <item name="android:autoSizeMaxTextSize">36sp</item>
+        <item name="android:autoSizeStepGranularity">2sp</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@android:color/darker_gray</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:minHeight">80dp</item>
+        <!-- 필요시 minHeight, maxHeight 추가 가능 -->
     </style>
 
     <style name="NumberImageView">
-        <item name="android:layout_width">@dimen/number_image_width</item>
-        <item name="android:layout_height">@dimen/number_image_height</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>   <!-- layout_weight 쓰는 경우 0dp 필수 -->
         <item name="android:layout_marginTop">@dimen/number_image_margin_top</item>
-        <item name="android:scaleType">centerInside</item>
         <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitCenter</item>
     </style>
 
     <style name="RemainingTimeTextView">
@@ -26,6 +31,5 @@
         <item name="android:paddingTop">8dp</item>
         <item name="android:gravity">center</item>
     </style>
-
 </resources>
 
