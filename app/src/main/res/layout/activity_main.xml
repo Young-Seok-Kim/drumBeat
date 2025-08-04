@@ -20,114 +20,114 @@
             android:text="메트로놈으로 이동"
             android:layout_marginBottom="24dp" />
 
-    <!-- 네 칸 수평 배치 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginBottom="24dp">
-
-        <!-- 각 칸 -->
+        <!-- 네 칸 수평 배치 -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginBottom="24dp">
+
+            <!-- 각 칸 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
 
-            <ImageView
-                android:id="@+id/image1"
-                style="@style/NumberImageView"
-                android:contentDescription="Image 1"
-                tools:src="@drawable/beat1" />
-            <ImageView
-                android:id="@+id/image2"
-                style="@style/NumberImageView"
-                android:contentDescription="Image 2"
-                tools:src="@drawable/beat1" />
+                <ImageView
+                    android:id="@+id/image1"
+                    style="@style/NumberImageView"
+                    android:contentDescription="Image 1"
+                    tools:src="@drawable/beat1" />
+                <ImageView
+                    android:id="@+id/image2"
+                    style="@style/NumberImageView"
+                    android:contentDescription="Image 2"
+                    tools:src="@drawable/beat1" />
 
-            <ImageView
-                android:id="@+id/image3"
-                style="@style/NumberImageView"
-                android:contentDescription="Image 3"
-                tools:src="@drawable/beat1" />
+                <ImageView
+                    android:id="@+id/image3"
+                    style="@style/NumberImageView"
+                    android:contentDescription="Image 3"
+                    tools:src="@drawable/beat1" />
 
-            <ImageView
-                android:id="@+id/image4"
-                style="@style/NumberImageView"
-                android:contentDescription="Image 4"
-                tools:src="@drawable/beat1" />
+                <ImageView
+                    android:id="@+id/image4"
+                    style="@style/NumberImageView"
+                    android:contentDescription="Image 4"
+                    tools:src="@drawable/beat1" />
 
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!-- 남은 시간 표시 텍스트뷰 추가 -->
+        <TextView
+            android:id="@+id/textViewRemainingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/RemainingTimeTextView"
+            android:text="남은 시간: -" />
+
+        <!-- ProgressBar: 남은 시간 시각 바 -->
+        <ProgressBar
+            android:id="@+id/progressBarTimer"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:max="100"
+            android:progress="100"
+            android:progressTint="@color/purple_500"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- 시간 입력 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시간 (1~10초): "
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextTime"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="2"
+                android:hint="초"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:ems="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:spacing="12dp">
+
+            <Button
+                android:id="@+id/buttonStartStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시작" />
         </LinearLayout>
 
 
     </LinearLayout>
-
-    <!-- 남은 시간 표시 텍스트뷰 추가 -->
-    <TextView
-        android:id="@+id/textViewRemainingTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/RemainingTimeTextView"
-        android:text="남은 시간: -" />
-
-    <!-- ProgressBar: 남은 시간 시각 바 -->
-    <ProgressBar
-        android:id="@+id/progressBarTimer"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:max="100"
-        android:progress="100"
-        android:progressTint="@color/purple_500"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="24dp"/>
-
-    <!-- 시간 입력 -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="시간 (1~10초): "
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/editTextTime"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="2"
-            android:hint="초"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:ems="3" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:spacing="12dp">
-
-        <Button
-            android:id="@+id/buttonStartStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="시작" />
-    </LinearLayout>
-
-
-</LinearLayout>
 </ScrollView>
