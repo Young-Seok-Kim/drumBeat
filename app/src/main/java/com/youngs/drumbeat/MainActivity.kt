@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setListener() {
-        binding.buttonStartStop?.setOnClickListener {
+        binding.buttonStartStop.setOnClickListener {
             if (isRunning) {
                 stopTimer()
                 Toast.makeText(this, "동작이 중지되었습니다.", Toast.LENGTH_SHORT).show()
@@ -65,6 +65,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "$intervalSeconds 초마다 숫자와 이미지가 갱신됩니다.", Toast.LENGTH_SHORT).show()
             }
             updateButtonText()
+        }
+
+        binding.buttonGoMetronome?.setOnClickListener {
+            val dialog = MetronomeDialogFragment()
+            dialog.show(supportFragmentManager, "MetronomeDialog")
         }
     }
 

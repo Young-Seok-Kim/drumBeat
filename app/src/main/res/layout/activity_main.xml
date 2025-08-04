@@ -13,6 +13,13 @@
         android:gravity="center"
         android:padding="16dp">
 
+        <Button
+            android:id="@+id/buttonGoMetronome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메트로놈으로 이동"
+            android:layout_marginBottom="24dp" />
+
     <!-- 네 칸 수평 배치 -->
     <LinearLayout
         android:layout_width="match_parent"
