@@ -32,7 +32,7 @@ jobs:
     - name: Decode Keystore
       run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/youngs.jks
 
-    - name: List app directory to verify keystore presence
+    - name: Verify keystore file presence
       run: ls -l ./app
 
     - name: Grant execution permission to gradlew
