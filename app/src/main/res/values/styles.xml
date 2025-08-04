@@ -17,13 +17,12 @@
 
     <style name="NumberImageView">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">80dp</item>   <!-- layout_weight 쓰는 경우 0dp 필수 -->
+        <item name="android:layout_height">80dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginTop">@dimen/number_image_margin_top</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:scaleType">fitXY</item>
     </style>
-
     <style name="RemainingTimeTextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
