@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Check commit message contains "create apk"
         id: check_commit_msg
@@ -52,7 +52,7 @@ jobs:
           jarsigner -verbose -keystore youngs.jks -storepass $KEYSTORE_PASSWORD -keypass $KEY_PASSWORD $APK_PATH $KEY_ALIAS
 
       - name: Upload Signed APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: signed-apk
           path: ./app/build/outputs/apk/release/app-release-unsigned.apk
