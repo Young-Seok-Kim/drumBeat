@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DrumBeat"
         android:screenOrientation="sensor"
+        android:configChanges="orientation|screenSize"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"

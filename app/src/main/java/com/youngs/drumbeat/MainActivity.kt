@@ -1,7 +1,9 @@
 package com.youngs.drumbeat
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.youngs.drumbeat.databinding.ActivityMainBinding
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             numbers = List(4) { (1..16).random() }
         }
 
+        setScaleTypeByOrientation()  // 여기서 방향에 맞게 scaleType 지정
         setListener()
         if (isRunning) {
             // 화면 회전 복구시 타이머 다시 시작
@@ -42,6 +45,24 @@ class MainActivity : AppCompatActivity() {
             stopTimer()
             setRandomNumbersAndImages(numbers)
         }
+    }
+
+    private fun setScaleTypeByOrientation() {
+        val scaleType = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ImageView.ScaleType.FIT_XY
+        } else {
+            ImageView.ScaleType.FIT_CENTER
+        }
+
+        val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
+        for (imageView in imageViews) {
+            imageView.scaleType = scaleType
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        setScaleTypeByOrientation()  // 방향이 바뀌면 scaleType 갱신
     }
 
     private fun setListener() {
@@ -67,17 +88,16 @@ class MainActivity : AppCompatActivity() {
             updateButtonText()
         }
 
-        binding.buttonGoMetronome?.setOnClickListener {
+        binding.buttonGoMetronome.setOnClickListener {
             val dialog = MetronomeDialogFragment()
             dialog.show(supportFragmentManager, "MetronomeDialog")
         }
     }
 
     private fun updateButtonText() {
-        binding.buttonStartStop?.text = if (isRunning) "종료" else "시작"
+        binding.buttonStartStop.text = if (isRunning) "종료" else "시작"
     }
 
-    // 남은 시간을 매개변수로 받도록 변경
     private fun startTimer(startSeconds: Int = intervalSeconds) {
         setViewsVisible(true)
         setRandomNumbersAndImages(numbers)
@@ -126,7 +146,6 @@ class MainActivity : AppCompatActivity() {
         binding.progressBarTimer.progress = progressPercent
     }
 
-    // 숫자 상태를 인자로 받아서 고정적으로 출력
     private fun setRandomNumbersAndImages(nums: List<Int>) {
         val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
 
@@ -154,7 +173,6 @@ class MainActivity : AppCompatActivity() {
         countDownTimer?.cancel()
     }
 
-    // 상태 저장 (화면 회전 등)
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("intervalSeconds", intervalSeconds)
