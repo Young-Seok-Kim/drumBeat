@@ -49,13 +49,18 @@ jobs:
       - name: Build Release APK
         run: ./gradlew assembleRelease
 
+      - name: Find generated APK file
+        id: find_apk
+        run: |
+          APK_FILE=$(ls ./app/build/outputs/apk/release/*.apk)
+          echo "apk_file=$APK_FILE" >> $GITHUB_OUTPUT
+
       - name: Sign APK with jarsigner
         run: |
-          APK_PATH=./app/build/outputs/apk/release/app-release-unsigned.apk
-          jarsigner -verbose -keystore youngs.jks -storepass $KEYSTORE_PASSWORD -keypass $KEY_PASSWORD $APK_PATH $KEY_ALIAS
+          jarsigner -verbose -keystore youngs.jks -storepass $KEYSTORE_PASSWORD -keypass $KEY_PASSWORD ${{ steps.find_apk.outputs.apk_file }} $KEY_ALIAS
 
       - name: Upload Signed APK
         uses: actions/upload-artifact@v4
         with:
           name: signed-apk
-          path: ./app/build/outputs/apk/release/app-release-unsigned.apk
+          path: ${{ steps.find_apk.outputs.apk_file }}
