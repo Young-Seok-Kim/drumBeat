@@ -24,6 +24,7 @@ jobs:
       - name: Restore Keystore File
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > my-release-key.jks
+          ls -l my-release-key.jks
 
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
@@ -34,7 +35,11 @@ jobs:
             -Pandroid.injected.signing.store.file=$(pwd)/my-release-key.jks \
             -Pandroid.injected.signing.store.password="${{ secrets.KEYSTORE_PASSWORD }}" \
             -Pandroid.injected.signing.key.alias="${{ secrets.KEY_ALIAS }}" \
-            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}"
+            -Pandroid.injected.signing.key.password="${{ secrets.KEY_PASSWORD }}" \
+            --stacktrace --info
+
+      - name: List APK outputs for debugging
+        run: ls -l app/build/outputs/apk/release/
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
