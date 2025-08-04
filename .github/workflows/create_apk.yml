@@ -30,15 +30,19 @@ jobs:
         java-version: 17
 
     - name: Decode Keystore
-      run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./keystore.jks
+      run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ./app/youngs.jks
 
     - name: Grant execution permission to gradlew
       run: chmod +x ./gradlew
 
     - name: Build Signed Release APK
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
         ./gradlew assembleRelease \
-          -Pandroid.injected.signing.store.file=keystore.jks \
+          -Pandroid.injected.signing.store.file=app/youngs.jks \
           -Pandroid.injected.signing.store.password=$KEYSTORE_PASSWORD \
           -Pandroid.injected.signing.key.alias=$KEY_ALIAS \
           -Pandroid.injected.signing.key.password=$KEY_PASSWORD \
