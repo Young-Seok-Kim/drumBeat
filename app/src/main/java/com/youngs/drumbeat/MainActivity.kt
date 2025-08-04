@@ -1,10 +1,7 @@
 package com.youngs.drumbeat
 
-import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.AttributeSet
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.youngs.drumbeat.databinding.ActivityMainBinding
@@ -14,9 +11,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private var intervalSeconds: Int = 3
-    private var isRunning = false // 실행 중인지 상태 체크용
-
+    private var isRunning = false
     private var countDownTimer: CountDownTimer? = null
+    private var remainingSeconds: Int = 0
+    private var numbers = listOf(1, 1, 1, 1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,70 +22,83 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.textViewRemainingTime.text = "남은 시간: -"
-        binding.progressBarTimer.progress = 100
+        // 복구: saved 상태 있으면 복원
+        if (savedInstanceState != null) {
+            intervalSeconds = savedInstanceState.getInt("intervalSeconds", 3)
+            isRunning = savedInstanceState.getBoolean("isRunning", false)
+            remainingSeconds = savedInstanceState.getInt("remainingSeconds", intervalSeconds)
+            numbers = savedInstanceState.getIntegerArrayList("numbers")?.toList() ?: List(4) { 1 }
+        } else {
+            remainingSeconds = intervalSeconds
+            numbers = List(4) { (1..16).random() }
+        }
+
         setListener()
-        stopTimer()
+        if (isRunning) {
+            // 화면 회전 복구시 타이머 다시 시작
+            setRandomNumbersAndImages(numbers)
+            startTimer(remainingSeconds)
+        } else {
+            stopTimer()
+            setRandomNumbersAndImages(numbers)
+        }
     }
 
     private fun setListener() {
-        binding.buttonStart.setOnClickListener {
-            val timeText = binding.editTextTime.text.toString()
-            val seconds = timeText.toIntOrNull()
-
-            if (seconds == null || seconds !in 1..10) {
-                Toast.makeText(this, "시간을 1초에서 10초 사이로 입력해주세요.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
+        binding.buttonStartStop?.setOnClickListener {
             if (isRunning) {
-                Toast.makeText(this, "이미 실행 중입니다.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                stopTimer()
+                Toast.makeText(this, "동작이 중지되었습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                val timeText = binding.editTextTime.text.toString()
+                val seconds = timeText.toIntOrNull()
+                if (seconds == null || seconds !in 1..10) {
+                    Toast.makeText(this, "시간을 1초에서 10초 사이로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                intervalSeconds = seconds
+                remainingSeconds = seconds
+                isRunning = true
+                numbers = List(4) { (1..16).random() }
+                setRandomNumbersAndImages(numbers)
+                startTimer(remainingSeconds)
+                Toast.makeText(this, "$intervalSeconds 초마다 숫자와 이미지가 갱신됩니다.", Toast.LENGTH_SHORT).show()
             }
-
-            intervalSeconds = seconds
-            isRunning = true
-
-            startTimer()
-
-            Toast.makeText(this, "$intervalSeconds 초마다 숫자와 이미지가 갱신됩니다.", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.buttonStop.setOnClickListener {
-            if (!isRunning) {
-                Toast.makeText(this, "동작 중이 아닙니다.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            stopTimer()
-            Toast.makeText(this, "동작이 중지되었습니다.", Toast.LENGTH_SHORT).show()
+            updateButtonText()
         }
     }
 
-    private fun startTimer() {
-        // 첫 갱신 즉시 실행
+    private fun updateButtonText() {
+        binding.buttonStartStop?.text = if (isRunning) "종료" else "시작"
+    }
+
+    // 남은 시간을 매개변수로 받도록 변경
+    private fun startTimer(startSeconds: Int = intervalSeconds) {
         setViewsVisible(true)
-        setRandomNumbersAndImages()
-        updateRemainingTimeText(intervalSeconds)
-        updateProgressBar(intervalSeconds, intervalSeconds)
+        setRandomNumbersAndImages(numbers)
+        updateRemainingTimeText(startSeconds)
+        updateProgressBar(startSeconds, intervalSeconds)
+        updateButtonText()
 
         countDownTimer?.cancel()
-        countDownTimer = object : CountDownTimer((intervalSeconds * 1000).toLong(), 1000L) {
+        countDownTimer = object : CountDownTimer((startSeconds * 1000).toLong(), 1000L) {
             override fun onTick(millisUntilFinished: Long) {
-                val remainingSec = ((millisUntilFinished + 999) / 1000).toInt()  // 올림 처리
-                updateRemainingTimeText(remainingSec)
-                updateProgressBar(remainingSec, intervalSeconds)
+                remainingSeconds = ((millisUntilFinished + 999) / 1000).toInt()
+                updateRemainingTimeText(remainingSeconds)
+                updateProgressBar(remainingSeconds, intervalSeconds)
             }
 
             override fun onFinish() {
                 updateRemainingTimeText(0)
                 updateProgressBar(0, intervalSeconds)
                 if (isRunning) {
-                    setRandomNumbersAndImages()
-                    startTimer()
+                    numbers = List(4) { (1..16).random() }
+                    setRandomNumbersAndImages(numbers)
+                    remainingSeconds = intervalSeconds
+                    startTimer(remainingSeconds)
                 }
             }
         }.start()
-
     }
 
     private fun stopTimer() {
@@ -95,8 +106,8 @@ class MainActivity : AppCompatActivity() {
         countDownTimer?.cancel()
         binding.textViewRemainingTime.text = "중지됨"
         binding.progressBarTimer.progress = 0
-
         setViewsVisible(false)
+        updateButtonText()
     }
 
     private fun updateRemainingTimeText(remainingSec: Int) {
@@ -110,16 +121,12 @@ class MainActivity : AppCompatActivity() {
         binding.progressBarTimer.progress = progressPercent
     }
 
-    private fun setRandomNumbersAndImages() {
-        val numbers = List(4) { (1..16).random() }  // 1~16 랜덤
-
-        val numberTextViews = listOf(binding.number1, binding.number2, binding.number3, binding.number4)
+    // 숫자 상태를 인자로 받아서 고정적으로 출력
+    private fun setRandomNumbersAndImages(nums: List<Int>) {
         val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
 
-        for (i in numbers.indices) {
-            val num = numbers[i]
-            numberTextViews[i].text = num.toString()
-
+        for (i in nums.indices) {
+            val num = nums[i]
             val imageResId = resources.getIdentifier("beat$num", "drawable", packageName)
             if (imageResId != 0) {
                 imageViews[i].setImageResource(imageResId)
@@ -132,16 +139,22 @@ class MainActivity : AppCompatActivity() {
     private fun setViewsVisible(visible: Boolean) {
         val visibility = if (visible) android.view.View.VISIBLE else android.view.View.GONE
 
-        val numberTextViews = listOf(binding.number1, binding.number2, binding.number3, binding.number4)
         val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
 
-        numberTextViews.forEach { it.visibility = visibility }
         imageViews.forEach { it.visibility = visibility }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
         countDownTimer?.cancel()
+    }
+
+    // 상태 저장 (화면 회전 등)
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("intervalSeconds", intervalSeconds)
+        outState.putBoolean("isRunning", isRunning)
+        outState.putInt("remainingSeconds", remainingSeconds)
+        outState.putIntegerArrayList("numbers", ArrayList(numbers))
     }
 }

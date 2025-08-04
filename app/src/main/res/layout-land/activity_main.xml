@@ -22,89 +22,30 @@
             android:gravity="center"
             android:layout_marginBottom="24dp">
 
-            <!-- 1번 칸 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_margin="4dp">
+            <ImageView
+                android:id="@+id/image1"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 1"
+                tools:src="@drawable/beat1" />
 
-                <TextView
-                    android:id="@+id/number1"
-                    style="@style/NumberTextView"
-                    tools:text="12" />
+            <ImageView
+                android:id="@+id/image2"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 2"
+                tools:src="@drawable/beat1" />
 
-                <ImageView
-                    android:id="@+id/image1"
-                    style="@style/NumberImageView"
-                    android:contentDescription="Image 1"
-                    tools:src="@drawable/beat1" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/image3"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 3"
+                tools:src="@drawable/beat1" />
 
-            <!-- 2번 칸 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_margin="4dp">
+            <ImageView
+                android:id="@+id/image4"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 4"
+                tools:src="@drawable/beat1" />
 
-                <TextView
-                    android:id="@+id/number2"
-                    style="@style/NumberTextView"
-                    tools:text="5" />
-
-                <ImageView
-                    android:id="@+id/image2"
-                    style="@style/NumberImageView"
-                    android:contentDescription="Image 2"
-                    tools:src="@drawable/beat1" />
-            </LinearLayout>
-
-            <!-- 3번 칸 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_margin="4dp">
-
-                <TextView
-                    android:id="@+id/number3"
-                    style="@style/NumberTextView"
-                    tools:text="16" />
-
-                <ImageView
-                    android:id="@+id/image3"
-                    style="@style/NumberImageView"
-                    android:contentDescription="Image 3"
-                    tools:src="@drawable/beat1" />
-            </LinearLayout>
-
-            <!-- 4번 칸 -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_margin="4dp">
-
-                <TextView
-                    android:id="@+id/number4"
-                    style="@style/NumberTextView"
-                    tools:text="8" />
-
-                <ImageView
-                    android:id="@+id/image4"
-                    style="@style/NumberImageView"
-                    android:contentDescription="Image 4"
-                    tools:src="@drawable/beat1" />
-            </LinearLayout>
         </LinearLayout>
 
         <!-- 남은 시간 표시 텍스트뷰 -->
@@ -162,20 +103,11 @@
             android:layout_marginBottom="24dp">
 
             <Button
-                android:id="@+id/buttonStart"
+                android:id="@+id/buttonStartStop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="시작" />
 
-            <View
-                android:layout_width="12dp"
-                android:layout_height="0dp" />
-
-            <Button
-                android:id="@+id/buttonStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="중지" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

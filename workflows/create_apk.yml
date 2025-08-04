@@ -1,0 +1,58 @@
+name: Build and Sign APK on "create apk" commit
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-sign-apk:
+    runs-on: ubuntu-latest
+
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check commit message contains "create apk"
+        id: check_commit_msg
+        run: |
+          msg=$(git log -1 --pretty=%B)
+          echo "Commit message: $msg"
+          if [[ "$msg" != *"create apk"* ]]; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Exit if commit message does not contain create apk
+        if: steps.check_commit_msg.outputs.skip == 'true'
+        run: exit 0
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Decode keystore from base64
+        run: echo "$KEYSTORE_BASE64" | base64 --decode > ./youngs.jks
+
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Sign APK with jarsigner
+        run: |
+          APK_PATH=./app/build/outputs/apk/release/app-release-unsigned.apk
+          jarsigner -verbose -keystore youngs.jks -storepass $KEYSTORE_PASSWORD -keypass $KEY_PASSWORD $APK_PATH $KEY_ALIAS
+
+      - name: Upload Signed APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: signed-apk
+          path: ./app/build/outputs/apk/release/app-release-unsigned.apk

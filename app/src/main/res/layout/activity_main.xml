@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rootLayout"
     xmlns:tools="http://schemas.android.com/tools"
-    android:fillViewport="true"> <!-- 화면 꽉 채우고 Scoll 동작 활성화 -->
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,88 +23,38 @@
 
         <!-- 각 칸 -->
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="4dp">
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/number1"
-                android:text="0"
-                style="@style/NumberTextView"
-                tools:text="12" />
 
             <ImageView
                 android:id="@+id/image1"
                 style="@style/NumberImageView"
                 android:contentDescription="Image 1"
                 tools:src="@drawable/beat1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="4dp">
-
-            <TextView
-                android:id="@+id/number2"
-                android:text="0"
-                style="@style/NumberTextView"
-                tools:text="5" />
-
             <ImageView
                 android:id="@+id/image2"
                 style="@style/NumberImageView"
                 android:contentDescription="Image 2"
                 tools:src="@drawable/beat1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="4dp">
-
-            <TextView
-                android:id="@+id/number3"
-                android:text="0"
-                style="@style/NumberTextView"
-                tools:text="16" />
 
             <ImageView
                 android:id="@+id/image3"
                 style="@style/NumberImageView"
                 android:contentDescription="Image 3"
                 tools:src="@drawable/beat1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_margin="4dp">
-
-            <TextView
-                android:id="@+id/number4"
-                android:text="0"
-                style="@style/NumberTextView"
-                tools:text="8" />
 
             <ImageView
                 android:id="@+id/image4"
                 style="@style/NumberImageView"
                 android:contentDescription="Image 4"
                 tools:src="@drawable/beat1" />
+
         </LinearLayout>
+
 
     </LinearLayout>
 
@@ -165,20 +115,10 @@
         android:spacing="12dp">
 
         <Button
-            android:id="@+id/buttonStart"
+            android:id="@+id/buttonStartStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="시작" />
-
-        <View
-            android:layout_width="12dp"
-            android:layout_height="0dp" />
-
-        <Button
-            android:id="@+id/buttonStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="중지" />
     </LinearLayout>
 
 
