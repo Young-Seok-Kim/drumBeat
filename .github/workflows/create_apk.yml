@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  # 태그 생성 시 자동 릴리즈를 원하면 아래 주석 해제
-  # tags:
-  #   - 'v*'
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -39,32 +36,9 @@ jobs:
         -Pandroid.injected.signing.key.password=$KEY_PASSWORD
 
     - name: Upload APK artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: app-release.apk
         path: app/build/outputs/apk/release/app-release.apk
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download APK artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: app-release.apk
-        path: ./apk
-
-    - name: Create GitHub Release
-      id: create_release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ github.ref_name }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Upload APK to Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ./apk/app-release.apk
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if-no-files-found: error
+        retention-days: 30
