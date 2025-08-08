@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="0dp">
+
+        <!-- 4개 이미지 수평 배치 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="fill"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:id="@+id/image1"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 1"
+                android:layout_margin="0dp"
+                android:scaleType="fitCenter"
+                tools:src="@drawable/beat1" />
+
+            <ImageView
+                android:id="@+id/image2"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 2"
+                android:layout_margin="0dp"
+                android:scaleType="fitCenter"
+                tools:src="@drawable/beat1" />
+
+            <ImageView
+                android:id="@+id/image3"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 3"
+                android:layout_margin="0dp"
+                android:scaleType="fitCenter"
+                tools:src="@drawable/beat1" />
+
+            <ImageView
+                android:id="@+id/image4"
+                style="@style/NumberImageView"
+                android:contentDescription="Image 4"
+                android:layout_margin="0dp"
+                android:scaleType="fitCenter"
+                tools:src="@drawable/beat1" />
+
+        </LinearLayout>
+
+        <!-- 남은 시간 표시 텍스트뷰 -->
+        <TextView
+            android:id="@+id/textViewRemainingTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/RemainingTimeTextView"
+            android:text="남은 시간: -" />
+
+        <!-- ProgressBar -->
+        <ProgressBar
+            android:id="@+id/progressBarTimer"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:max="100"
+            android:progress="100"
+            android:progressTint="@color/purple_500"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- 시간 입력 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시간 (1~10초): "
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/editTextTime"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="2"
+                android:hint="초"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:ems="3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            >
+
+            <Button
+                android:id="@+id/buttonStartStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시작" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

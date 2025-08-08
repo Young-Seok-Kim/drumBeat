@@ -15,21 +15,35 @@
         <!-- 필요시 minHeight, maxHeight 추가 가능 -->
     </style>
 
+<!--    <style name="NumberImageView">-->
+<!--        <item name="android:layout_width">0dp</item>-->
+<!--        <item name="android:layout_height">80dp</item>-->
+<!--        <item name="android:layout_weight">1</item>-->
+<!--        <item name="android:layout_marginTop">@dimen/number_image_margin_top</item>-->
+<!--        <item name="android:adjustViewBounds">true</item>-->
+<!--        <item name="android:scaleType">fitCenter</item>-->
+<!--    </style>-->
+<!--    <style name="RemainingTimeTextView">-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:textSize">18sp</item>-->
+<!--        <item name="android:textColor">@android:color/black</item>-->
+<!--        <item name="android:paddingTop">8dp</item>-->
+<!--        <item name="android:gravity">center</item>-->
+<!--    </style>-->
+
+
+    <!-- 예시 styles -->
     <style name="NumberImageView">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">100dp</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginTop">@dimen/number_image_margin_top</item>
-        <item name="android:adjustViewBounds">true</item>
-        <item name="android:scaleType">fitCenter</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
+
     <style name="RemainingTimeTextView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:gravity">center</item>
     </style>
 </resources>
 

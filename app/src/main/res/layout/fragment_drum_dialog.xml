@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 상단: 드럼 관련 UI가 들어갈 프래그먼트 컨테이너 -->
+    <FrameLayout
+        android:id="@+id/fl_drum_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <!-- 하단: 메트로놈 UI 프래그먼트가 들어갈 공간 -->
+    <FrameLayout
+        android:id="@+id/fl_metronome_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"
+        />
+</LinearLayout>

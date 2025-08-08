@@ -7,14 +7,17 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.youngs.drumbeat.databinding.FragmentMetronomeBinding
 
-class MetronomeDialogFragment : DialogFragment() {
+class MetronomeFragment : Fragment() {
 
-    private lateinit var binding: FragmentMetronomeBinding
+    private var _binding: FragmentMetronomeBinding? = null
+    private val binding get() = _binding!!
 
     private var isPlaying = false
     private var bpm = 60
@@ -31,38 +34,38 @@ class MetronomeDialogFragment : DialogFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentMetronomeBinding.inflate(inflater, container, false)
-        toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
-
-        initViews()
-
+    ): View? {
+        _binding = FragmentMetronomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+
+        initViews()
+    }
+
     private fun initViews() {
+        // SeekBar 설정 및 bpm 동기화
         binding.seekBarBpm.setOnSeekBarChangeListener(object :
             android.widget.SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
                 bpm = progress.coerceIn(30, 240)
-                binding.textViewBpm.text = "BPM: $bpm"
+//                binding.textViewBpm.text = "BPM: $bpm"
                 if (binding.editTextBpm.text.toString() != bpm.toString()) {
                     binding.editTextBpm.setText(bpm.toString())
                 }
             }
-
             override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
         })
 
+        // EditText에 텍스트 변경 리스너 등록하여 SeekBar와 텍스트 동기화
         binding.editTextBpm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val input = s.toString()
@@ -71,7 +74,7 @@ class MetronomeDialogFragment : DialogFragment() {
                     val clamped = inputBpm.coerceIn(30, 240)
                     if (clamped != bpm) {
                         bpm = clamped
-                        binding.textViewBpm.text = "BPM: $bpm"
+//                        binding.textViewBpm.text = "BPM: $bpm"
                         if (binding.seekBarBpm.progress != bpm) {
                             binding.seekBarBpm.progress = bpm
                         }
@@ -82,11 +85,11 @@ class MetronomeDialogFragment : DialogFragment() {
                     }
                 }
             }
-
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // 키보드 '완료' 버튼 처리
         binding.editTextBpm.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 binding.editTextBpm.clearFocus()
@@ -96,6 +99,7 @@ class MetronomeDialogFragment : DialogFragment() {
             }
         }
 
+        // 시작/중지 버튼 클릭 리스너
         binding.buttonStartStop.setOnClickListener {
             if (isPlaying) stopMetronome() else startMetronome()
         }
@@ -118,13 +122,6 @@ class MetronomeDialogFragment : DialogFragment() {
         super.onDestroyView()
         stopMetronome()
         toneGen.release()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+        _binding = null
     }
 }

@@ -6,32 +6,49 @@
     android:gravity="center"
     android:padding="24dp">
 
-    <TextView
-        android:id="@+id/textViewBpm"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BPM: 60"
-        android:textSize="24sp"
-        android:layout_marginBottom="16dp" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
 
-    <SeekBar
-        android:id="@+id/seekBarBpm"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:min="30"
-        android:max="240"
-        android:progress="60"
-        android:layout_marginBottom="12dp" />
+                <TextView
+                    android:id="@+id/textViewBpm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BPM : "
+                    android:textSize="24sp"/>
 
-    <EditText
-        android:id="@+id/editTextBpm"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:text="60"
-        android:gravity="center"
-        android:maxLines="1"
-        android:layout_marginBottom="24dp" />
+                <EditText
+                    android:id="@+id/editTextBpm"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="60"
+                    android:gravity="center"
+                    android:maxLines="1" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBarBpm"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:min="30"
+                android:max="240"
+                android:progress="60"
+                android:layout_marginBottom="12dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonStartStop"
