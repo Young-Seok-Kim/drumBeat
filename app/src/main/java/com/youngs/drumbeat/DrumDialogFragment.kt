@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.youngs.drumbeat.databinding.FragmentDrumDialogBinding
+import com.youngs.drumbeat.databinding.FragmentFrameDialogBinding
 
 class DrumDialogFragment : DialogFragment() {
 
-    private var _binding: FragmentDrumDialogBinding? = null
+    private var _binding: FragmentFrameDialogBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,7 +22,7 @@ class DrumDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentDrumDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentFrameDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
