@@ -1,11 +1,6 @@
 package com.youngs.drumbeat
 
-import android.content.res.Configuration
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.youngs.drumbeat.databinding.ActivityMainBinding
 
@@ -23,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         // 버튼 클릭 리스너 설정 (findViewById 대신 binding 사용)
         // MainActivity.kt 예시 (뷰 바인딩 사용 기준)
         binding.buttonOpenFragment.setOnClickListener {
-            DrumDialogFragment().show(supportFragmentManager, DrumDialogFragment().javaClass.simpleName)
+            FrameDialogFragment().show(supportFragmentManager, FrameDialogFragment().javaClass.simpleName)
         }
 
     }

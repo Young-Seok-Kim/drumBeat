@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.youngs.drumbeat.databinding.FragmentFrameDialogBinding
 
-class DrumDialogFragment : DialogFragment() {
+class FrameDialogFragment : DialogFragment() {
 
     private var _binding: FragmentFrameDialogBinding? = null
     private val binding get() = _binding!!
