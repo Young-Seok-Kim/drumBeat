@@ -1,24 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootLayout"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- 상단: 드럼 관련 UI가 들어갈 프래그먼트 컨테이너 -->
-    <FrameLayout
-        android:id="@+id/fl_drum_container"
+    <!-- 메인 콘텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_height="match_parent">
 
-    <!-- 하단: 메트로놈 UI 프래그먼트가 들어갈 공간 -->
-    <FrameLayout
-        android:id="@+id/fl_metronome_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="200dp"
-        />
-</LinearLayout>
+        <!-- 툴바 영역 -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:title="@string/app_name"
+            android:titleTextColor="@android:color/white" />
+
+        <!-- 드럼 관련 프래그먼트 -->
+        <FrameLayout
+            android:id="@+id/fl_drum_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- 메트로놈 관련 프래그먼트 -->
+        <FrameLayout
+            android:id="@+id/fl_metronome_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="200dp" />
+
+    </LinearLayout>
+
+    <!-- 네비게이션 메뉴 (오른쪽에) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@android:color/white" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

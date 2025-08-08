@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.youngs.drumbeat.ui.main.MainFragment"
+        android:label="메인 화면"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_main_to_drumFragment"
+            app:destination="@id/drumFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_main_to_settingsFragment"-->
+<!--            app:destination="@id/settingsFragment" />-->
+<!--        <action-->
+<!--            android:id="@+id/action_main_to_helpFragment"-->
+<!--            app:destination="@id/helpFragment" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/drumFragment"
+        android:name="com.youngs.drumbeat.ui.drum.DrumFragment"
+        android:label="드럼 화면" />
+
+<!--    <fragment-->
+<!--        android:id="@+id/settingsFragment"-->
+<!--        android:name="com.youngs.drumbeat.ui.settings.SettingsFragment"-->
+<!--        android:label="설정" />-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/helpFragment"-->
+<!--        android:name="com.youngs.drumbeat.ui.help.HelpFragment"-->
+<!--        android:label="도움말" />-->
+</navigation>

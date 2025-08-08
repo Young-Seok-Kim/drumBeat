@@ -1,4 +1,4 @@
-package com.youngs.drumbeat
+package com.youngs.drumbeat.ui.metronome
 
 import android.media.AudioManager
 import android.media.ToneGenerator
@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.youngs.drumbeat.databinding.FragmentMetronomeBinding
 
@@ -53,16 +54,16 @@ class MetronomeFragment : Fragment() {
     private fun initViews() {
         // SeekBar 설정 및 bpm 동기화
         binding.seekBarBpm.setOnSeekBarChangeListener(object :
-            android.widget.SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
+            SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 bpm = progress.coerceIn(30, 240)
 //                binding.textViewBpm.text = "BPM: $bpm"
                 if (binding.editTextBpm.text.toString() != bpm.toString()) {
                     binding.editTextBpm.setText(bpm.toString())
                 }
             }
-            override fun onStartTrackingTouch(seekBar: android.widget.SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: android.widget.SeekBar?) {}
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
         // EditText에 텍스트 변경 리스너 등록하여 SeekBar와 텍스트 동기화
