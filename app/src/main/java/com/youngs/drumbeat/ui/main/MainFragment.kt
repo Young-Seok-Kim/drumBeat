@@ -40,17 +40,6 @@ class MainFragment : Fragment() {
                 binding.buttonContainer.addView(btn)
             }
         }
-
-        viewModel.navigateTo.observe(viewLifecycleOwner) { item ->
-            item?.let {
-                when (it.id) {
-                    1 -> findNavController().navigate(MainFragmentDirections.actionMainToDrumFragment())
-//                    2 -> findNavController().navigate(MainFragmentDirections.actionMainToSettingsFragment())
-//                    3 -> findNavController().navigate(MainFragmentDirections.actionMainToHelpFragment())
-                }
-                viewModel.onNavigated()
-            }
-        }
     }
 
     override fun onDestroyView() {

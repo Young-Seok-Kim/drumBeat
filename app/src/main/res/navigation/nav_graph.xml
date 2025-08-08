@@ -13,9 +13,9 @@
         <action
             android:id="@+id/action_main_to_drumFragment"
             app:destination="@id/drumFragment" />
-<!--        <action-->
-<!--            android:id="@+id/action_main_to_settingsFragment"-->
-<!--            app:destination="@id/settingsFragment" />-->
+        <action
+            android:id="@+id/action_main_to_settingsFragment"
+            app:destination="@id/selfBeatFragment" />
 <!--        <action-->
 <!--            android:id="@+id/action_main_to_helpFragment"-->
 <!--            app:destination="@id/helpFragment" />-->
@@ -24,12 +24,14 @@
     <fragment
         android:id="@+id/drumFragment"
         android:name="com.youngs.drumbeat.ui.drum.DrumFragment"
+        tools:layout="@layout/fragment_drum"
         android:label="드럼 화면" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/settingsFragment"-->
-<!--        android:name="com.youngs.drumbeat.ui.settings.SettingsFragment"-->
-<!--        android:label="설정" />-->
+    <fragment
+        android:id="@+id/selfBeatFragment"
+        android:name="com.youngs.drumbeat.ui.selfbeat.SelfBeatFragment"
+        tools:layout="@layout/fragment_self_beat"
+        android:label="설정" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/helpFragment"-->

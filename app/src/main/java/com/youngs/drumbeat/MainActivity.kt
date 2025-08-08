@@ -2,10 +2,12 @@ package com.youngs.drumbeat
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -14,6 +16,7 @@ import com.youngs.drumbeat.databinding.ActivityMainBinding
 import com.youngs.drumbeat.ui.drum.DrumFragment
 import com.youngs.drumbeat.ui.main.MainFragment
 import com.youngs.drumbeat.ui.main.MainViewModel
+import com.youngs.drumbeat.ui.selfbeat.SelfBeatFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,11 +25,15 @@ class MainActivity : AppCompatActivity() {
 
     // 뷰모델 선언 (ViewModelProvider 등 상황에 맞게)
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var metronomeFragment: Fragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        metronomeFragment = supportFragmentManager.findFragmentById(R.id.metronome_fragment)!!
+
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
@@ -57,6 +64,7 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
+        binding.navHostFragment
 
         // 3) ViewModel 내비게이션 상태 관찰하여 프래그먼트 교체 또는 네비게이션 처리
         mainViewModel.navigateTo.observe(this) { item ->
@@ -68,7 +76,17 @@ class MainActivity : AppCompatActivity() {
                     2 -> supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_fragment, DrumFragment())
                         .commit()
+                    3 -> supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, SelfBeatFragment())
+                        .commit()
                 }
+
+                if (it.id == 3) {
+                    metronomeFragment.view?.visibility = View.GONE
+                } else {
+                    metronomeFragment.view?.visibility = View.VISIBLE
+                }
+
                 mainViewModel.onNavigated()
             }
         }
