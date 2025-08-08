@@ -1,6 +1,7 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- 앱바 영역 -->
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -18,10 +18,12 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="DrumBeat" />
+                android:background="?attr/colorPrimary"
+                android:title="DrumBeat"
+                android:titleTextColor="@android:color/white" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- 네비게이션 호스트 : 남은 영역 차지 -->
+        <!-- FragmentContainerView: 네비게이션 호스트, weight=1 -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
@@ -31,12 +33,17 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/nav_graph" />
 
-        <!-- 고정 하단 메트로놈 프래그먼트 -->
-        <androidx.fragment.app.FragmentContainerView
+        <!-- 하단 고정 메트로놈 프래그먼트 -->
+        <fragment
             android:id="@+id/metronome_fragment"
             android:name="com.youngs.drumbeat.ui.metronome.MetronomeFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
+</androidx.drawerlayout.widget.DrawerLayout>
