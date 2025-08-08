@@ -8,9 +8,8 @@ import com.youngs.drumbeat.data.MenuItem
 class MainViewModel : ViewModel() {
 
     private val _menuItems = MutableLiveData<List<MenuItem>>(listOf(
-        MenuItem(1, "드럼 화면"),
-//        MenuItem(2, "설정"),
-//        MenuItem(3, "도움말")
+        MenuItem(1, "메인 화면"),
+        MenuItem(2, "드럼 화면"),
     ))
     val menuItems: LiveData<List<MenuItem>> = _menuItems
 

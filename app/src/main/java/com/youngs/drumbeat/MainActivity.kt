@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.youngs.drumbeat.data.MenuItem
 import com.youngs.drumbeat.databinding.ActivityMainBinding
 import com.youngs.drumbeat.ui.drum.DrumFragment
@@ -62,9 +63,11 @@ class MainActivity : AppCompatActivity() {
             item?.let {
                 when (it.id) {
                     1 -> supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, MainFragment())
+                        .commit()
+                    2 -> supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_fragment, DrumFragment())
                         .commit()
-                    // 다른 메뉴 id 대응 코드 추가 가능
                 }
                 mainViewModel.onNavigated()
             }
@@ -93,6 +96,24 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                // 홈 버튼 클릭 시 수행할 동작
+
+                // 예: 네비게이션 컨트롤러를 이용해 메인 프래그먼트로 이동
+                val navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
+                navController.navigate(R.id.mainFragment)
+
+                // 드로어가 있다면 닫기 처리도 필요하면 추가
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
