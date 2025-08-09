@@ -2,4 +2,5 @@
     <string name="app_name">drumBeat</string>
     <string name="navigation_drawer_open">메뉴 열기</string>
     <string name="navigation_drawer_close">메뉴 닫기</string>
+    <string name="selfbeat_4click">버튼을 네 번 이상 눌러 \n템포를 맞춰주세요</string>
 </resources>

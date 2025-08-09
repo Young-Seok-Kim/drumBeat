@@ -40,7 +40,6 @@ class SelfBeatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.textViewInfo.text = "버튼을 네 번 이상 눌러 템포를 맞춰주세요"
         binding.textViewBpm.text = ""
 
         // "탭하여 측정" 버튼 클릭
