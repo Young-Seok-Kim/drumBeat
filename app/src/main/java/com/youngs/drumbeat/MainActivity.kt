@@ -3,6 +3,8 @@ package com.youngs.drumbeat
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +25,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
 
+    private var backPressedTime: Long = 0
+    private val BACK_PRESS_INTERVAL = 2000L
+
     // 뷰모델 선언 (ViewModelProvider 등 상황에 맞게)
     private val mainViewModel: MainViewModel by viewModels()
     private lateinit var metronomeFragment: Fragment
@@ -32,9 +37,44 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         metronomeFragment = supportFragmentManager.findFragmentById(R.id.metronome_fragment)!!
 
-        setContentView(binding.root)
+        metronomeFragment.view?.visibility = View.GONE // 첫 화면에서는 메트로놈이 안보이도록 수정
+
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    return
+                }
+                val navHostFragment = supportFragmentManager
+                    .findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+//                val currentFragment =
+//                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                val currentFragment =
+                    navHostFragment?.childFragmentManager?.primaryNavigationFragment
+                if (currentFragment is MainFragment) {
+                    metronomeFragment.view?.visibility = View.GONE
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - backPressedTime < BACK_PRESS_INTERVAL) {
+                        finish()
+                    } else {
+                        backPressedTime = currentTime
+                        Toast.makeText(this@MainActivity, "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else {
+                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                    val navController = navHostFragment.navController
+
+                        navController.navigate(R.id.mainFragment)
+                }
+            }
+        })
+
 
         setSupportActionBar(binding.toolbar)
 
@@ -64,24 +104,19 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
-        binding.navHostFragment
 
         // 3) ViewModel 내비게이션 상태 관찰하여 프래그먼트 교체 또는 네비게이션 처리
         mainViewModel.navigateTo.observe(this) { item ->
             item?.let {
-                when (it.id) {
-                    1 -> supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, MainFragment())
-                        .commit()
-                    2 -> supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, DrumFragment())
-                        .commit()
-                    3 -> supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, SelfBeatFragment())
-                        .commit()
-                }
+                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                val navController = navHostFragment.navController
 
-                if (it.id == 3) {
+                when (it.id) {
+                    1 -> navController.navigate(R.id.mainFragment)
+                    2 -> navController.navigate(R.id.drumFragment)
+                    3 -> navController.navigate(R.id.selfBeatFragment)
+                }
+                if (it.id == 1 || it.id == 3) {
                     metronomeFragment.view?.visibility = View.GONE
                 } else {
                     metronomeFragment.view?.visibility = View.VISIBLE
@@ -93,9 +128,10 @@ class MainActivity : AppCompatActivity() {
 
         // 초기 프래그먼트 설정 등 필요 시 추가
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, MainFragment())
-                .commit()
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            navController.navigate(R.id.mainFragment)
         }
     }
 
@@ -123,7 +159,8 @@ class MainActivity : AppCompatActivity() {
                 // 홈 버튼 클릭 시 수행할 동작
 
                 // 예: 네비게이션 컨트롤러를 이용해 메인 프래그먼트로 이동
-                val navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
+                val navController =
+                    binding.navHostFragment.getFragment<NavHostFragment>().navController
                 navController.navigate(R.id.mainFragment)
 
                 // 드로어가 있다면 닫기 처리도 필요하면 추가
@@ -131,8 +168,19 @@ class MainActivity : AppCompatActivity() {
 
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
-}
 
+    private fun updateMetronomeVisibility() {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        // MainFragment 또는 SelfBeatFragment일 때 숨김
+        if (currentFragment is MainFragment) {
+            metronomeFragment.view?.visibility = View.GONE
+        } else {
+            metronomeFragment.view?.visibility = View.VISIBLE
+        }
+    }
+
+}

@@ -17,7 +17,7 @@ class SelfBeatFragment : Fragment() {
     private var _binding: FragmentSelfBeatBinding? = null
     private val binding get() = _binding!!
 
-    private var lastTapTime: Long = 0L
+    private val tapTimes = mutableListOf<Long>() // 클릭 시각 기록 리스트
     private var intervalMillis: Long = 0L
     private var isPlaying = false
 
@@ -44,7 +44,7 @@ class SelfBeatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
 
-        binding.textViewInfo.text = "버튼을 두 번 눌러 템포를 맞춰주세요"
+        binding.textViewInfo.text = "버튼을 네 번 눌러 템포를 맞춰주세요"
         binding.buttonTap.text = "탭하여 시작"
         binding.textViewBpm.text = ""
 
@@ -52,28 +52,43 @@ class SelfBeatFragment : Fragment() {
             val currentTime = System.currentTimeMillis()
 
             if (!isPlaying) {
-                if (lastTapTime == 0L) {
-                    lastTapTime = currentTime
-                    binding.textViewInfo.text = "첫 번째 탭이 기록됐어요!\n다시 한 번 눌러주세요."
-                } else {
-                    intervalMillis = currentTime - lastTapTime
-                    lastTapTime = 0L
+                tapTimes.add(currentTime)
 
-                    if (intervalMillis < 200) {
-                        Toast.makeText(requireContext(), "너무 짧은 간격입니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show()
-                        binding.textViewInfo.text = "버튼을 두 번 눌러 템포를 맞춰주세요"
+                if (tapTimes.size == 1) {
+                    binding.textViewInfo.text = "첫 번째 탭 기록됨"
+                } else if (tapTimes.size in 2..4) {
+                    binding.textViewInfo.text = "${tapTimes.size}번째 탭 기록됨"
+                }
+
+                if (tapTimes.size == 4) {
+                    // 간격 구하기
+                    val intervals = mutableListOf<Long>()
+                    for (i in 1 until tapTimes.size) {
+                        intervals.add(tapTimes[i] - tapTimes[i - 1])
+                    }
+                    val avgInterval = intervals.average().toLong()
+
+                    if (avgInterval < 200) {
+                        Toast.makeText(requireContext(), "간격이 너무 짧아요. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                        resetTaps()
                         return@setOnClickListener
                     }
 
-                    val bpm = (60000.0 / intervalMillis).toInt()
+                    intervalMillis = avgInterval
+                    val bpm = (60000.0 / avgInterval).toInt()
                     binding.textViewBpm.text = "$bpm BPM"
-                    binding.textViewInfo.text = "SelfBeat가 시작됩니다!"
+                    binding.textViewInfo.text = "SelfBeat 시작!"
+
                     startSelfBeat(intervalMillis)
+                    tapTimes.clear()
                 }
+
             } else {
+                // 메트로놈 정지
                 stopSelfBeat()
-                binding.textViewInfo.text = "버튼을 두 번 눌러 템포를 맞춰주세요"
+                binding.textViewInfo.text = "버튼을 네 번 눌러 템포를 맞춰주세요"
                 binding.textViewBpm.text = ""
+                resetTaps()
             }
         }
     }
@@ -90,6 +105,10 @@ class SelfBeatFragment : Fragment() {
         binding.buttonTap.text = "탭하여 시작"
         handler.removeCallbacks(tickRunnable)
         toneGen.stopTone()
+    }
+
+    private fun resetTaps() {
+        tapTimes.clear()
     }
 
     override fun onDestroyView() {

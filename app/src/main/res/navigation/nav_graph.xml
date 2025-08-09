@@ -31,7 +31,7 @@
         android:id="@+id/selfBeatFragment"
         android:name="com.youngs.drumbeat.ui.selfbeat.SelfBeatFragment"
         tools:layout="@layout/fragment_self_beat"
-        android:label="설정" />
+        android:label="나만의 비트" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/helpFragment"-->
