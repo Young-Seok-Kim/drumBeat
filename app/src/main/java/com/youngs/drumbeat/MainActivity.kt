@@ -38,11 +38,14 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
         metronomeFragment = supportFragmentManager.findFragmentById(R.id.metronome_fragment)!!
 
-        metronomeFragment.view?.visibility = View.GONE // 첫 화면에서는 메트로놈이 안보이도록 수정
-
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            updateMetronomeVisibility(destination.id)
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -52,12 +55,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 val navHostFragment = supportFragmentManager
                     .findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
-//                val currentFragment =
-//                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
                 val currentFragment =
                     navHostFragment?.childFragmentManager?.primaryNavigationFragment
                 if (currentFragment is MainFragment) {
-                    metronomeFragment.view?.visibility = View.GONE
                     val currentTime = System.currentTimeMillis()
                     if (currentTime - backPressedTime < BACK_PRESS_INTERVAL) {
                         finish()
@@ -67,10 +67,7 @@ class MainActivity : AppCompatActivity() {
                             .show()
                     }
                 } else {
-                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                    val navController = navHostFragment.navController
-
-                        navController.navigate(R.id.mainFragment)
+                    navController.navigate(R.id.mainFragment)
                 }
             }
         })
@@ -173,14 +170,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateMetronomeVisibility() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-        // MainFragment 또는 SelfBeatFragment일 때 숨김
-        if (currentFragment is MainFragment) {
+    private fun updateMetronomeVisibility(destinationId: Int) {
+        if (destinationId == R.id.mainFragment || destinationId == R.id.selfBeatFragment) {
             metronomeFragment.view?.visibility = View.GONE
         } else {
             metronomeFragment.view?.visibility = View.VISIBLE
         }
     }
-
 }
