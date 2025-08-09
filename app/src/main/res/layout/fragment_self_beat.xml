@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +11,7 @@
         android:id="@+id/textViewInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="버튼을 두 번 눌러 템포를 맞춰주세요"
+        android:text="버튼을 네 번 이상 눌러 템포를 맞춰주세요"
         android:textSize="18sp"
         android:layout_marginBottom="24dp" />
 
@@ -19,10 +19,21 @@
         android:id="@+id/buttonTap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="탭하여 시작"
+        android:text="탭하여 측정"
         android:textSize="20sp"
         android:padding="16dp"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="멈추기"
+        android:textSize="20sp"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp"
+        tools:visibility="visible"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/textViewBpm"
@@ -31,6 +42,7 @@
         android:text=""
         android:textSize="32sp"
         android:textStyle="bold"
+        tools:visibility="visible"
         android:layout_marginTop="16dp" />
 
 </LinearLayout>
