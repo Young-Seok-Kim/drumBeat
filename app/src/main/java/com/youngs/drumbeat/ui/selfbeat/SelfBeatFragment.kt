@@ -1,7 +1,5 @@
 package com.youngs.drumbeat.ui.selfbeat
 
-import android.media.AudioManager
-import android.media.ToneGenerator
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,15 +17,14 @@ class SelfBeatFragment : Fragment() {
 
     private val tapTimes = mutableListOf<Long>() // 클릭 시각 기록 리스트
     private var intervalMillis: Long = 0L
-    private var isPlaying = false
+    private var isRunning = false
 
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var toneGen: ToneGenerator
 
     private val tickRunnable = object : Runnable {
         override fun run() {
-            if (isPlaying && intervalMillis > 0) {
-                toneGen.startTone(ToneGenerator.TONE_PROP_BEEP)
+            if (isRunning && intervalMillis > 0) {
+                // 소리 제거 → 아무 동작 안 함, 단순 주기 유지
                 handler.postDelayed(this, intervalMillis)
             }
         }
@@ -42,7 +39,6 @@ class SelfBeatFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
 
         binding.textViewInfo.text = "버튼을 네 번 이상 눌러 템포를 맞춰주세요"
         binding.textViewBpm.text = ""
@@ -50,8 +46,6 @@ class SelfBeatFragment : Fragment() {
         // "탭하여 측정" 버튼 클릭
         binding.buttonTap.setOnClickListener {
             val currentTime = System.currentTimeMillis()
-
-            // 터치 시간 기록
             tapTimes.add(currentTime)
 
             if (tapTimes.size >= 4) {
@@ -63,7 +57,11 @@ class SelfBeatFragment : Fragment() {
                 val avgInterval = intervals.average().toLong()
 
                 if (avgInterval < 200) {
-                    Toast.makeText(requireContext(), "간격이 너무 짧아요. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "간격이 너무 짧아요. 다시 시도해주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     tapTimes.clear()
                     stopSelfBeat()
                     return@setOnClickListener
@@ -74,7 +72,7 @@ class SelfBeatFragment : Fragment() {
                 binding.textViewBpm.text = "$bpm BPM"
                 binding.textViewInfo.text = "측정 중... (최근 4회 평균)"
 
-                if (!isPlaying) {
+                if (!isRunning) {
                     startSelfBeat(intervalMillis)
                 }
             }
@@ -89,28 +87,21 @@ class SelfBeatFragment : Fragment() {
     }
 
     private fun startSelfBeat(intervalMs: Long) {
-        isPlaying = true
-        binding.buttonTap.isEnabled = true
+        isRunning = true
         binding.buttonStop.visibility = View.VISIBLE
         handler.post(tickRunnable)
     }
 
     private fun stopSelfBeat() {
-        isPlaying = false
+        isRunning = false
         handler.removeCallbacks(tickRunnable)
-        toneGen.stopTone()
         tapTimes.clear()
         binding.buttonStop.visibility = View.GONE
-    }
-
-    private fun resetTaps() {
-        tapTimes.clear()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         stopSelfBeat()
-        toneGen.release()
         _binding = null
     }
 }
