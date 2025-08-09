@@ -78,17 +78,10 @@ class SelfBeatFragment : Fragment() {
             }
         }
 
-        // "멈추기" 버튼 클릭
-        binding.buttonStop.setOnClickListener {
-            stopSelfBeat()
-            binding.textViewInfo.text = "버튼을 네 번 이상 눌러 템포를 맞춰주세요"
-            binding.textViewBpm.text = ""
-        }
     }
 
     private fun startSelfBeat(intervalMs: Long) {
         isRunning = true
-        binding.buttonStop.visibility = View.VISIBLE
         handler.post(tickRunnable)
     }
 
@@ -96,7 +89,6 @@ class SelfBeatFragment : Fragment() {
         isRunning = false
         handler.removeCallbacks(tickRunnable)
         tapTimes.clear()
-        binding.buttonStop.visibility = View.GONE
     }
 
     override fun onDestroyView() {
