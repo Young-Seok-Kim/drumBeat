@@ -75,6 +75,14 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"/>
 
+        <CheckBox
+            android:id="@+id/checkBoxFixScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="악보고정"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
+
         <!-- 시간 입력 -->
         <LinearLayout
             android:layout_width="wrap_content"

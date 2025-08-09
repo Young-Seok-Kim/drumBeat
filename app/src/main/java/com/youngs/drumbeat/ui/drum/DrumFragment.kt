@@ -28,6 +28,12 @@ class DrumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setScaleTypeByOrientation()
 
+        setListener()
+        setObserve()
+    }
+
+    private fun setListener(){
+
         // UI 이벤트 - 시작/종료 버튼 클릭 시 ViewModel에 위임
         binding.buttonStartStop.setOnClickListener {
             if (viewModel.isRunning.value == true) {
@@ -44,6 +50,13 @@ class DrumFragment : Fragment() {
                 Toast.makeText(requireContext(), "$seconds 초마다 숫자와 이미지가 갱신됩니다.", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.checkBoxFixScore.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setFixScore(isChecked)
+        }
+    }
+
+    private fun setObserve(){
 
         // ViewModel 상태 관찰 및 UI 반영
         viewModel.isRunning.observe(viewLifecycleOwner) { running ->
@@ -65,6 +78,9 @@ class DrumFragment : Fragment() {
                 binding.textViewRemainingTime.text = "남은 시간: -"
                 binding.progressBarTimer.progress = 0
             }
+        }
+        viewModel.numbers.observe(viewLifecycleOwner) { nums ->
+            setRandomNumbersAndImages(nums)
         }
     }
 
