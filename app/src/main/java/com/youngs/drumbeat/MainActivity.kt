@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateMetronomeVisibility(destinationId: Int) {
         if (destinationId == R.id.mainFragment || destinationId == R.id.selfBeatFragment) {
             metronomeFragment.view?.visibility = View.GONE
-            (metronomeFragment as? MetronomeFragment)?.stopMetronome()
+            metronomeFragment.stopMetronome()
 
         } else {
             metronomeFragment.view?.visibility = View.VISIBLE
