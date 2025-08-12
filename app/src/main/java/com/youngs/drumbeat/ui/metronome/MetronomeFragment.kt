@@ -112,7 +112,7 @@ class MetronomeFragment : Fragment() {
         handler.post(tickRunnable)
     }
 
-    private fun stopMetronome() {
+    public fun stopMetronome() {
         isPlaying = false
         binding.buttonStartStop.text = "Start"
         handler.removeCallbacks(tickRunnable)
@@ -125,4 +125,5 @@ class MetronomeFragment : Fragment() {
         toneGen.release()
         _binding = null
     }
+
 }

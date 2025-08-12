@@ -18,6 +18,7 @@ import com.youngs.drumbeat.databinding.ActivityMainBinding
 import com.youngs.drumbeat.ui.drum.DrumFragment
 import com.youngs.drumbeat.ui.main.MainFragment
 import com.youngs.drumbeat.ui.main.MainViewModel
+import com.youngs.drumbeat.ui.metronome.MetronomeFragment
 import com.youngs.drumbeat.ui.selfbeat.SelfBeatFragment
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     // 뷰모델 선언 (ViewModelProvider 등 상황에 맞게)
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var metronomeFragment: Fragment
+    private lateinit var metronomeFragment: MetronomeFragment
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,8 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        metronomeFragment = supportFragmentManager.findFragmentById(R.id.metronome_fragment)!!
+        metronomeFragment = supportFragmentManager.findFragmentById(R.id.metronome_fragment) as MetronomeFragment
+
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateMetronomeVisibility(destination.id)
@@ -113,12 +115,6 @@ class MainActivity : AppCompatActivity() {
                     2 -> navController.navigate(R.id.drumFragment)
                     3 -> navController.navigate(R.id.selfBeatFragment)
                 }
-                if (it.id == 1 || it.id == 3) {
-                    metronomeFragment.view?.visibility = View.GONE
-                } else {
-                    metronomeFragment.view?.visibility = View.VISIBLE
-                }
-
                 mainViewModel.onNavigated()
             }
         }
@@ -173,6 +169,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateMetronomeVisibility(destinationId: Int) {
         if (destinationId == R.id.mainFragment || destinationId == R.id.selfBeatFragment) {
             metronomeFragment.view?.visibility = View.GONE
+            (metronomeFragment as? MetronomeFragment)?.stopMetronome()
+
         } else {
             metronomeFragment.view?.visibility = View.VISIBLE
         }
