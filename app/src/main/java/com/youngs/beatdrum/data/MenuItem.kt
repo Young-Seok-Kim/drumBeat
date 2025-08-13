@@ -1,4 +1,4 @@
-package com.youngs.drumbeat.data
+package com.youngs.beatdrum.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -1,4 +1,4 @@
-package com.youngs.drumbeat
+package com.youngs.beatdrum
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

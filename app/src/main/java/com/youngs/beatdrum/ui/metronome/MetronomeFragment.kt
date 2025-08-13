@@ -1,4 +1,4 @@
-package com.youngs.drumbeat.ui.metronome
+package com.youngs.beatdrum.ui.metronome
 
 import android.media.AudioManager
 import android.media.ToneGenerator
@@ -13,7 +13,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
-import com.youngs.drumbeat.databinding.FragmentMetronomeBinding
+import com.youngs.beatdrum.R
+import com.youngs.beatdrum.databinding.FragmentMetronomeBinding
 
 class MetronomeFragment : Fragment() {
 
@@ -108,13 +109,13 @@ class MetronomeFragment : Fragment() {
 
     private fun startMetronome() {
         isPlaying = true
-        binding.buttonStartStop.text = "Stop"
+        binding.buttonStartStop.text = getString(R.string.Stop)
         handler.post(tickRunnable)
     }
 
     public fun stopMetronome() {
         isPlaying = false
-        binding.buttonStartStop.text = "Start"
+        binding.buttonStartStop.text = getString(R.string.Start)
         handler.removeCallbacks(tickRunnable)
         toneGen.stopTone()
     }

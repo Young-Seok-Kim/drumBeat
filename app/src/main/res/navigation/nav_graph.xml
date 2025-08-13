@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.youngs.drumbeat.ui.main.MainFragment"
+        android:name="com.youngs.beatdrum.ui.main.MainFragment"
         android:label="메인 화면"
         tools:layout="@layout/fragment_main">
         <action
@@ -23,15 +23,15 @@
 
     <fragment
         android:id="@+id/drumFragment"
-        android:name="com.youngs.drumbeat.ui.drum.DrumFragment"
+        android:name="com.youngs.beatdrum.ui.drum.DrumFragment"
         tools:layout="@layout/fragment_drum"
         android:label="드럼 화면" />
 
     <fragment
         android:id="@+id/selfBeatFragment"
-        android:name="com.youngs.drumbeat.ui.selfbeat.SelfBeatFragment"
+        android:name="com.youngs.beatdrum.ui.selfbeat.SelfBeatFragment"
         tools:layout="@layout/fragment_self_beat"
-        android:label="나만의 비트" />
+        android:label="BPM 측정" />
 
 <!--    <fragment-->
 <!--        android:id="@+id/helpFragment"-->

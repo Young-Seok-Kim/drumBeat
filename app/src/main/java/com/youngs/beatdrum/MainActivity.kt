@@ -1,5 +1,6 @@
-package com.youngs.drumbeat
+package com.youngs.beatdrum
 
+import com.google.android.gms.ads.AdRequest
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -9,17 +10,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import com.youngs.drumbeat.data.MenuItem
-import com.youngs.drumbeat.databinding.ActivityMainBinding
-import com.youngs.drumbeat.ui.drum.DrumFragment
-import com.youngs.drumbeat.ui.main.MainFragment
-import com.youngs.drumbeat.ui.main.MainViewModel
-import com.youngs.drumbeat.ui.metronome.MetronomeFragment
-import com.youngs.drumbeat.ui.selfbeat.SelfBeatFragment
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.youngs.beatdrum.data.MenuItem
+import com.youngs.beatdrum.databinding.ActivityMainBinding
+import com.youngs.beatdrum.ui.main.MainFragment
+import com.youngs.beatdrum.ui.main.MainViewModel
+import com.youngs.beatdrum.ui.metronome.MetronomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,8 +35,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding.root)  // 먼저 레이아웃 연결
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 

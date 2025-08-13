@@ -37,7 +37,7 @@
         <!-- 하단 고정 메트로놈 프래그먼트 -->
         <fragment
             android:id="@+id/metronome_fragment"
-            android:name="com.youngs.drumbeat.ui.metronome.MetronomeFragment"
+            android:name="com.youngs.beatdrum.ui.metronome.MetronomeFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

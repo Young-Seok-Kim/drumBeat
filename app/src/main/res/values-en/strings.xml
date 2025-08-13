@@ -4,4 +4,6 @@
     <string name="navigation_drawer_open">Open menu</string>
     <string name="navigation_drawer_close">Close menu</string>
     <string name="selfbeat_4click">Press the button four or more times \n Set the tempo</string>
+    <string name="Start">Start</string>
+    <string name="Stop">Stop</string>
 </resources>

@@ -10,15 +10,18 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DrumBeat"
+        android:theme="@style/Theme.BeatDrum"
         android:screenOrientation="sensor"
         android:configChanges="orientation|screenSize"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1871591024314273~8620865009"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.DrumBeat">
+            android:theme="@style/Theme.BeatDrum">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

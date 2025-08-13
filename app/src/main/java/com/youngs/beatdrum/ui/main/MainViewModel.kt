@@ -1,16 +1,16 @@
-package com.youngs.drumbeat.ui.main
+package com.youngs.beatdrum.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.youngs.drumbeat.data.MenuItem
+import com.youngs.beatdrum.data.MenuItem
 
 class MainViewModel : ViewModel() {
 
     private val _menuItems = MutableLiveData<List<MenuItem>>(listOf(
         MenuItem(1, "메인"),
         MenuItem(2, "드럼"),
-        MenuItem(3, "나만의 비트"),
+        MenuItem(3, "BPM 측정"),
     ))
     val menuItems: LiveData<List<MenuItem>> = _menuItems
 

@@ -1,9 +1,8 @@
-package com.youngs.drumbeat.ui.drum
+package com.youngs.beatdrum.ui.drum
 
 import DrumViewModel
 import android.content.res.Configuration
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.youngs.drumbeat.databinding.FragmentDrumBinding
+import com.youngs.beatdrum.R
+import com.youngs.beatdrum.databinding.FragmentDrumBinding
 
 class DrumFragment : Fragment() {
 
@@ -85,7 +85,7 @@ class DrumFragment : Fragment() {
     }
 
     private fun updateButtonText(running: Boolean) {
-        binding.buttonStartStop.text = if (running) "종료" else "시작"
+        binding.buttonStartStop.text = if (running) getString(R.string.Stop) else getString(R.string.Start)
     }
 
     private fun setViewsVisible(visible: Boolean) {

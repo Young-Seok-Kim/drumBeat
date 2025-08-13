@@ -1,4 +1,4 @@
-package com.youngs.drumbeat
+package com.youngs.beatdrum
 
 import org.junit.Test
 

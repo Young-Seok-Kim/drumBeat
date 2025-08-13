@@ -1,5 +1,6 @@
-package com.youngs.drumbeat.ui.main
+package com.youngs.beatdrum.ui.main
 
+import android.media.tv.AdRequest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,15 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.youngs.drumbeat.databinding.FragmentMainBinding
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
+import com.youngs.beatdrum.AdIds
+import com.youngs.beatdrum.R
+import com.youngs.beatdrum.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
+    lateinit var mAdView: AdView
 
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
@@ -25,6 +31,7 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requireActivity().onBackPressedDispatcher.addCallback(
             this,
             object : OnBackPressedCallback(true) {
@@ -48,6 +55,16 @@ class MainFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        MobileAds.initialize(requireContext())
+
+        mAdView = binding.adView
+
+        mAdView.adUnitId = AdIds.BANNER_TEST_ID
+
+        val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
         viewModel.menuItems.observe(viewLifecycleOwner) { items ->
             binding.buttonContainer.removeAllViews()
             items.forEach { item ->
