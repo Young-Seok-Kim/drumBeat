@@ -109,13 +109,13 @@ class MetronomeFragment : Fragment() {
 
     private fun startMetronome() {
         isPlaying = true
-        binding.buttonStartStop.text = getString(R.string.Stop)
+        binding.buttonStartStop.text = getString(R.string.stop)
         handler.post(tickRunnable)
     }
 
     public fun stopMetronome() {
         isPlaying = false
-        binding.buttonStartStop.text = getString(R.string.Start)
+        binding.buttonStartStop.text = getString(R.string.start)
         handler.removeCallbacks(tickRunnable)
         toneGen.stopTone()
     }

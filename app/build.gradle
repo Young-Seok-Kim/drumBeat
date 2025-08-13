@@ -27,7 +27,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            resValue "bool", "is_debug_build", "true"
+        }
+
         release {
+            resValue "bool", "is_debug_build", "false"
             minifyEnabled false
             proguardFiles(
                     getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -45,6 +50,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        buildConfig = true
         compose false
     }
     composeOptions {

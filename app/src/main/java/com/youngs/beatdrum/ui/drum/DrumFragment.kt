@@ -85,7 +85,7 @@ class DrumFragment : Fragment() {
     }
 
     private fun updateButtonText(running: Boolean) {
-        binding.buttonStartStop.text = if (running) getString(R.string.Stop) else getString(R.string.Start)
+        binding.buttonStartStop.text = if (running) getString(R.string.stop) else getString(R.string.start)
     }
 
     private fun setViewsVisible(visible: Boolean) {

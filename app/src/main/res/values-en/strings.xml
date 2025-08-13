@@ -4,6 +4,9 @@
     <string name="navigation_drawer_open">Open menu</string>
     <string name="navigation_drawer_close">Close menu</string>
     <string name="selfbeat_4click">Press the button four or more times \n Set the tempo</string>
-    <string name="Start">Start</string>
-    <string name="Stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="sightread">Sightread</string>
+    <string name="main">Main</string>
+    <string name="measure_bpm">Measure BPM</string>
 </resources>

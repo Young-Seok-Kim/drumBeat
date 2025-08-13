@@ -1,6 +1,5 @@
 package com.youngs.beatdrum
 
-import com.google.android.gms.ads.AdRequest
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -11,8 +10,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.youngs.beatdrum.data.MenuItem
 import com.youngs.beatdrum.databinding.ActivityMainBinding
 import com.youngs.beatdrum.ui.main.MainFragment
@@ -134,8 +131,7 @@ class MainActivity : AppCompatActivity() {
         val menu = binding.navigationView.menu
         menu.clear()
         items.forEach { item ->
-            menu.add(Menu.NONE, item.id, Menu.NONE, item.title)
-                .setIcon(R.drawable.test) // 아이콘이 있으면 지정 또는 생략 가능
+            menu.add(Menu.NONE, item.id, Menu.NONE, getString(item.titleStringId)).setIcon(R.drawable.ic_main)
         }
     }
 
