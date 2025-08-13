@@ -10,7 +10,7 @@ class MainViewModel : ViewModel() {
 
     private val _menuItems = MutableLiveData<List<MenuItem>>(listOf(
         MenuItem(1, "메인", R.string.main),
-        MenuItem(2, "초견", R.string.stop),
+        MenuItem(2, "초견", R.string.sightread),
         MenuItem(3, "BPM 측정", R.string.measure_bpm),
     ))
     val menuItems: LiveData<List<MenuItem>> = _menuItems
