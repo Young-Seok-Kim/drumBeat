@@ -24,22 +24,22 @@
             <ImageView
                 android:id="@+id/image1"
                 style="@style/NumberImageView"
-                tools:src="@drawable/beat1" />
+                tools:src="@drawable/sightread_beat1" />
 
             <ImageView
                 android:id="@+id/image2"
                 style="@style/NumberImageView"
-                tools:src="@drawable/beat1" />
+                tools:src="@drawable/sightread_beat1" />
 
             <ImageView
                 android:id="@+id/image3"
                 style="@style/NumberImageView"
-                tools:src="@drawable/beat1" />
+                tools:src="@drawable/sightread_beat1" />
 
             <ImageView
                 android:id="@+id/image4"
                 style="@style/NumberImageView"
-                tools:src="@drawable/beat1" />
+                tools:src="@drawable/sightread_beat1" />
 
         </LinearLayout>
 

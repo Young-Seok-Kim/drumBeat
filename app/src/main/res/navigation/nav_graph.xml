@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/drumFragment"
-        android:name="com.youngs.beatdrum.ui.drum.DrumFragment"
+        android:name="com.youngs.beatdrum.ui.sightread.SightreadFragment"
         tools:layout="@layout/fragment_drum"
         android:label="드럼 화면" />
 

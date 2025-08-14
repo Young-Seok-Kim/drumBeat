@@ -3,7 +3,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DrumViewModel : ViewModel() {
+class SightreadViewModel : ViewModel() {
 
     private val _intervalSeconds = MutableLiveData(3)
     val intervalSeconds: LiveData<Int> = _intervalSeconds

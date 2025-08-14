@@ -1,6 +1,6 @@
-package com.youngs.beatdrum.ui.drum
+package com.youngs.beatdrum.ui.sightread
 
-import DrumViewModel
+import SightreadViewModel
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,12 +14,12 @@ import androidx.fragment.app.viewModels
 import com.youngs.beatdrum.R
 import com.youngs.beatdrum.databinding.FragmentDrumBinding
 
-class DrumFragment : Fragment() {
+class SightreadFragment : Fragment() {
 
     private var _binding: FragmentDrumBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: DrumViewModel by viewModels()
+    private val viewModel: SightreadViewModel by viewModels()
 
     // 현재 선택된 박자 (기본값 4/4)
     private var selectedBeats = 4
@@ -128,7 +128,7 @@ class DrumFragment : Fragment() {
         for (i in nums.indices) {
             if (i >= selectedBeats) break // 선택된 박자 수까지만 표시
             val num = nums[i]
-            val imageResId = resources.getIdentifier("beat$num", "drawable", requireContext().packageName)
+            val imageResId = resources.getIdentifier("sightread_beat$num", "drawable", requireContext().packageName)
             if (imageResId != 0) imageViews[i].setImageResource(imageResId)
             else imageViews[i].setImageDrawable(null)
         }
