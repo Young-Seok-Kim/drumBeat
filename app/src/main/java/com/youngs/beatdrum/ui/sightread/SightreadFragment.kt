@@ -15,6 +15,7 @@ import com.youngs.beatdrum.R
 import com.youngs.beatdrum.databinding.FragmentDrumBinding
 
 class SightreadFragment : Fragment() {
+    // 초견 메뉴
 
     private var _binding: FragmentDrumBinding? = null
     private val binding get() = _binding!!

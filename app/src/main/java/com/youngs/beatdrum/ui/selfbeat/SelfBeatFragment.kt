@@ -37,12 +37,16 @@ class SelfBeatFragment : Fragment() {
         _binding = FragmentSelfBeatBinding.inflate(inflater, container, false)
         return binding.root
     }
+    private var noteTypeMultiplier = 1 // 메트로놈과 동일하게 추가
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         binding.textViewBpm.text = ""
 
-        // "탭하여 측정" 버튼 클릭
+        // 예시: noteTypeMultiplier를 메트로놈 스피너와 동일하게 맞추기
+        // UI에서 선택할 수 있도록 하거나, 메트로놈에서 직접 가져올 수도 있음
+        // 여기선 간단히 4분음표 기준으로 고정 예시
+        noteTypeMultiplier = 1
+
         binding.buttonTap.setOnClickListener {
             val currentTime = System.currentTimeMillis()
             tapTimes.add(currentTime)
@@ -67,7 +71,10 @@ class SelfBeatFragment : Fragment() {
                 }
 
                 intervalMillis = avgInterval
-                val bpm = (60000.0 / avgInterval).toInt()
+
+                // 메트로놈과 동일하게 noteTypeMultiplier 반영
+                val bpm = (60000.0 / (avgInterval / noteTypeMultiplier.toDouble())).toInt()
+
                 binding.textViewBpm.text = "$bpm BPM"
                 binding.textViewInfo.text = "측정 중... (최근 4회 평균)"
 
@@ -76,8 +83,8 @@ class SelfBeatFragment : Fragment() {
                 }
             }
         }
-
     }
+
 
     private fun startSelfBeat(intervalMs: Long) {
         isRunning = true
