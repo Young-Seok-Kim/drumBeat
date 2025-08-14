@@ -111,23 +111,20 @@ class MetronomeFragment : Fragment() {
             } else false
         }
 
-        // 음표 선택 Spinner
-        val noteOptions = listOf("♩", "♪", "♬") // 4분음표, 8분음표, 16분음표
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, noteOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerNote.adapter = adapter
 
         binding.spinnerNote.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 noteTypeMultiplier = when (position) {
-                    0 -> 1 // 4분음표
-                    1 -> 2 // 8분음표
-                    2 -> 4 // 16분음표
+                    0 -> 1  // 4분음표
+                    1 -> 2  // 8분음표
+                    2 -> 4  // 16분음표
                     else -> 1
                 }
             }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+
+
 
         // 시작/정지 버튼
         binding.buttonStartStop.setOnClickListener {

@@ -13,4 +13,10 @@
         <item>3/4</item>
         <item>4/4</item>
     </string-array>
+
+    <string-array name="note_type_array">
+        <item>♩</item> <!-- 4분음표 -->
+        <item>♪</item> <!-- 8분음표 -->
+        <item>♬</item> <!-- 16분음표 -->
+    </string-array>
 </resources>

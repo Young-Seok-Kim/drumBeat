@@ -23,7 +23,8 @@
                 android:id="@+id/spinnerNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:spinnerMode="dropdown"
+                android:entries="@array/note_type_array"/>
 
             <TextView
                 android:id="@+id/textViewBpm"
