@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -18,7 +19,10 @@ class DrumFragment : Fragment() {
     private var _binding: FragmentDrumBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: DrumViewModel by viewModels() // 또는 activityViewModels() 상황에 따라
+    private val viewModel: DrumViewModel by viewModels()
+
+    // 현재 선택된 박자 (기본값 4/4)
+    private var selectedBeats = 4
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentDrumBinding.inflate(inflater, container, false)
@@ -27,14 +31,12 @@ class DrumFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setScaleTypeByOrientation()
-
         setListener()
         setObserve()
     }
 
-    private fun setListener(){
-
-        // UI 이벤트 - 시작/종료 버튼 클릭 시 ViewModel에 위임
+    private fun setListener() {
+        // 시작/종료 버튼
         binding.buttonStartStop.setOnClickListener {
             if (viewModel.isRunning.value == true) {
                 viewModel.stopDrum()
@@ -51,14 +53,27 @@ class DrumFragment : Fragment() {
             }
         }
 
+        // 악보고정 체크박스
         binding.checkBoxFixScore.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setFixScore(isChecked)
         }
+
+        // 스피너 선택 리스너
+        binding.spinnerTimeSignature.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                selectedBeats = when (position) {
+                    0 -> 2 // 2/4
+                    1 -> 3 // 3/4
+                    else -> 4 // 4/4
+                }
+                updateImageVisibility()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
     }
 
-    private fun setObserve(){
-
-        // ViewModel 상태 관찰 및 UI 반영
+    private fun setObserve() {
         viewModel.isRunning.observe(viewLifecycleOwner) { running ->
             updateButtonText(running)
             setViewsVisible(running)
@@ -73,14 +88,11 @@ class DrumFragment : Fragment() {
             setRandomNumbersAndImages(nums)
         }
 
-        viewModel.intervalSeconds.observe(viewLifecycleOwner) { interval ->
+        viewModel.intervalSeconds.observe(viewLifecycleOwner) {
             if (viewModel.remainingSeconds.value == null || viewModel.remainingSeconds.value == 0) {
                 binding.textViewRemainingTime.text = "남은 시간: -"
                 binding.progressBarTimer.progress = 0
             }
-        }
-        viewModel.numbers.observe(viewLifecycleOwner) { nums ->
-            setRandomNumbersAndImages(nums)
         }
     }
 
@@ -92,6 +104,15 @@ class DrumFragment : Fragment() {
         val visibility = if (visible) View.VISIBLE else View.GONE
         listOf(binding.image1, binding.image2, binding.image3, binding.image4).forEach {
             it.visibility = visibility
+        }
+        updateImageVisibility()
+    }
+
+    // 박자 수에 따라 이미지 표시 개수 조절
+    private fun updateImageVisibility() {
+        val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
+        imageViews.forEachIndexed { index, imageView ->
+            imageView.visibility = if (index < selectedBeats) View.VISIBLE else View.GONE
         }
     }
 
@@ -105,6 +126,7 @@ class DrumFragment : Fragment() {
     private fun setRandomNumbersAndImages(nums: List<Int>) {
         val imageViews = listOf(binding.image1, binding.image2, binding.image3, binding.image4)
         for (i in nums.indices) {
+            if (i >= selectedBeats) break // 선택된 박자 수까지만 표시
             val num = nums[i]
             val imageResId = resources.getIdentifier("beat$num", "drawable", requireContext().packageName)
             if (imageResId != 0) imageViews[i].setImageResource(imageResId)

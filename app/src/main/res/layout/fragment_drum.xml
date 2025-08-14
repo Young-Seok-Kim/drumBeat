@@ -13,7 +13,7 @@
         android:gravity="center"
         android:padding="0dp">
 
-        <!-- 4개 이미지 수평 배치 -->
+        <!-- 이미지 배치 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,43 +24,31 @@
             <ImageView
                 android:id="@+id/image1"
                 style="@style/NumberImageView"
-                android:contentDescription="Image 1"
-                android:layout_margin="0dp"
-                android:scaleType="fitCenter"
                 tools:src="@drawable/beat1" />
 
             <ImageView
                 android:id="@+id/image2"
                 style="@style/NumberImageView"
-                android:contentDescription="Image 2"
-                android:layout_margin="0dp"
-                android:scaleType="fitCenter"
                 tools:src="@drawable/beat1" />
 
             <ImageView
                 android:id="@+id/image3"
                 style="@style/NumberImageView"
-                android:contentDescription="Image 3"
-                android:layout_margin="0dp"
-                android:scaleType="fitCenter"
                 tools:src="@drawable/beat1" />
 
             <ImageView
                 android:id="@+id/image4"
                 style="@style/NumberImageView"
-                android:contentDescription="Image 4"
-                android:layout_margin="0dp"
-                android:scaleType="fitCenter"
                 tools:src="@drawable/beat1" />
 
         </LinearLayout>
 
-        <!-- 남은 시간 표시 텍스트뷰 -->
+        <!-- 남은 시간 표시 -->
         <TextView
             android:id="@+id/textViewRemainingTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/RemainingTimeTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:text="남은 시간: -" />
 
         <!-- ProgressBar -->
@@ -75,13 +63,27 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"/>
 
-        <CheckBox
-            android:id="@+id/checkBoxFixScore"
-            android:layout_width="wrap_content"
+        <!-- 악보고정 + 박자 선택 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="악보고정"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="24dp">
+
+            <CheckBox
+                android:id="@+id/checkBoxFixScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="악보고정" />
+
+            <Spinner
+                android:id="@+id/spinnerTimeSignature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/time_signature_array"
+                android:layout_marginStart="16dp"/>
+        </LinearLayout>
 
         <!-- 시간 입력 -->
         <LinearLayout
@@ -89,7 +91,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp">
 
             <TextView
@@ -110,21 +111,12 @@
                 android:ems="3" />
         </LinearLayout>
 
-        <LinearLayout
+        <!-- 시작/종료 버튼 -->
+        <Button
+            android:id="@+id/buttonStartStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            >
-
-            <Button
-                android:id="@+id/buttonStartStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/start" />
-        </LinearLayout>
+            android:text="@string/start" />
 
     </LinearLayout>
 </ScrollView>

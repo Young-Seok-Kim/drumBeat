@@ -8,4 +8,9 @@
     <string name="sightread">초견</string>
     <string name="main">메인</string>
     <string name="measure_bpm">BPM 측정</string>
+    <string-array name="time_signature_array">
+        <item>2/4</item>
+        <item>3/4</item>
+        <item>4/4</item>
+    </string-array>
 </resources>

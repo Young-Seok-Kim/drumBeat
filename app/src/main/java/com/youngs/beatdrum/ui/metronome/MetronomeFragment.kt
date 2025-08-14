@@ -28,7 +28,6 @@ class MetronomeFragment : Fragment() {
     private var noteTypeMultiplier = 1 // 4분=1, 8분=2, 16분=4
     private var beatsPerMeasure = 4    // 한 마디 박자 수 (4/4 박자)
     private var currentBeat = 0        // 현재 마디 안의 박자 위치
-    private var currentMeasure = 1     // 현재 마디 번호
 
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var toneGen: ToneGenerator
@@ -40,9 +39,6 @@ class MetronomeFragment : Fragment() {
                 if (currentBeat == 0) {
                     // 첫 박자: 높은음
                     toneGen.startTone(ToneGenerator.TONE_PROP_BEEP2, 100)
-                    // 마디 표시 업데이트
-                    binding.textViewMeasure.text = "${currentMeasure}마디"
-                    currentMeasure += 1
                 } else {
                     // 나머지 박자: 낮은음
                     toneGen.startTone(ToneGenerator.TONE_PROP_BEEP, 50)
@@ -116,7 +112,7 @@ class MetronomeFragment : Fragment() {
         }
 
         // 음표 선택 Spinner
-        val noteOptions = listOf("4분음표", "8분음표", "16분음표")
+        val noteOptions = listOf("♩", "♪", "♬") // 4분음표, 8분음표, 16분음표
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, noteOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerNote.adapter = adapter
@@ -142,8 +138,6 @@ class MetronomeFragment : Fragment() {
     private fun startMetronome() {
         isPlaying = true
         currentBeat = 0
-        currentMeasure = 1
-        binding.textViewMeasure.text = "1마디"
         binding.buttonStartStop.text = getString(R.string.stop)
         handler.post(tickRunnable)
     }

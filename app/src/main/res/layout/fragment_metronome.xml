@@ -6,69 +6,58 @@
     android:gravity="center"
     android:padding="10dp">
 
-    <!-- 마디 표시 -->
-    <TextView
-        android:id="@+id/textViewMeasure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1마디"
-        android:textSize="20sp"
-        android:layout_marginBottom="8dp" />
-
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <!-- BPM 입력 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
-
-                <TextView
-                    android:id="@+id/textViewBpm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="BPM:"
-                    android:textSize="24sp" />
-
-                <EditText
-                    android:id="@+id/editTextBpm"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:text="60"
-                    android:gravity="center"
-                    android:maxLines="1" />
-            </LinearLayout>
-
-            <!-- BPM SeekBar -->
-            <SeekBar
-                android:id="@+id/seekBarBpm"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:min="30"
-                android:max="240"
-                android:progress="60"
-                android:layout_marginBottom="12dp" />
-
-            <!-- 음표 선택 Spinner -->
             <Spinner
                 android:id="@+id/spinnerNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/textViewBpm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BPM:"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/editTextBpm"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="60"
+                android:gravity="center"
+                android:maxLines="1"
+                android:layout_marginStart="4dp" />
 
         </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekBarBpm"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:min="30"
+            android:max="240"
+            android:progress="60"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_marginBottom="8dp" />
+
+
     </LinearLayout>
 
-    <!-- 시작/정지 버튼 -->
     <Button
         android:id="@+id/buttonStartStop"
         android:layout_width="180dp"
