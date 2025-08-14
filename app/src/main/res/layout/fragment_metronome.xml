@@ -6,14 +6,26 @@
     android:gravity="center"
     android:padding="10dp">
 
+    <!-- 마디 표시 -->
+    <TextView
+        android:id="@+id/textViewMeasure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1마디"
+        android:textSize="20sp"
+        android:layout_marginBottom="8dp" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
+
+            <!-- BPM 입력 -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -23,8 +35,8 @@
                     android:id="@+id/textViewBpm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BPM : "
-                    android:textSize="24sp"/>
+                    android:text="BPM:"
+                    android:textSize="24sp" />
 
                 <EditText
                     android:id="@+id/editTextBpm"
@@ -34,9 +46,9 @@
                     android:text="60"
                     android:gravity="center"
                     android:maxLines="1" />
-
             </LinearLayout>
 
+            <!-- BPM SeekBar -->
             <SeekBar
                 android:id="@+id/seekBarBpm"
                 android:layout_width="250dp"
@@ -46,10 +58,17 @@
                 android:progress="60"
                 android:layout_marginBottom="12dp" />
 
-        </LinearLayout>
+            <!-- 음표 선택 Spinner -->
+            <Spinner
+                android:id="@+id/spinnerNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp" />
 
+        </LinearLayout>
     </LinearLayout>
 
+    <!-- 시작/정지 버튼 -->
     <Button
         android:id="@+id/buttonStartStop"
         android:layout_width="180dp"
