@@ -9,9 +9,9 @@ import com.youngs.beatdrum.data.MenuItem
 class MainViewModel : ViewModel() {
 
     private val _menuItems = MutableLiveData<List<MenuItem>>(listOf(
-        MenuItem(1, "메인", R.string.main),
-        MenuItem(2, "초견", R.string.sightread),
-        MenuItem(3, "BPM 측정", R.string.measure_bpm),
+        MenuItem(1, R.id.mainFragment, "메인", R.string.main, false),
+        MenuItem(2, R.id.drumFragment, "초견", R.string.sightread, true),
+        MenuItem(3, R.id.selfBeatFragment, "BPM 측정", R.string.measure_bpm, false),
     ))
     val menuItems: LiveData<List<MenuItem>> = _menuItems
 

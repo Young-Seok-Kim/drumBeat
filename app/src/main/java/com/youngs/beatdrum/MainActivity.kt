@@ -164,12 +164,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateMetronomeVisibility(destinationId: Int) {
-        if (destinationId == R.id.mainFragment || destinationId == R.id.selfBeatFragment) {
+        val menuItem = mainViewModel.menuItems.value?.find {
+            it.fragmentId == destinationId
+        }
+        if (menuItem?.showMetronome == true) {
+            metronomeFragment.view?.visibility = View.VISIBLE
+        } else {
             metronomeFragment.view?.visibility = View.GONE
             metronomeFragment.stopMetronome()
-
-        } else {
-            metronomeFragment.view?.visibility = View.VISIBLE
         }
     }
 }

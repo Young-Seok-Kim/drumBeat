@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:id="@+id/metronome_root">
 
     <LinearLayout
         android:layout_width="wrap_content"
