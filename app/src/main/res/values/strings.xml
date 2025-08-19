@@ -19,4 +19,5 @@
         <item>♪</item> <!-- 8분음표 -->
         <item>♬</item> <!-- 16분음표 -->
     </string-array>
+    <string name="ads_banner" translatable="false">ca-app-pub-1871591024314273/9993656422</string>
 </resources>

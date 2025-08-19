@@ -38,9 +38,9 @@
 
     <!-- 하단 고정 광고뷰 -->
     <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
         app:layout_constraintBottom_toBottomOf="parent"
