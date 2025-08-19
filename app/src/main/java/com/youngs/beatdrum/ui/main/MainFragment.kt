@@ -63,7 +63,7 @@ class MainFragment : Fragment() {
 //        if (resources.getBoolean(R.bool.is_debug_build)) {
 //            mAdView.adUnitId = AdIds.BANNER_TEST_ID // 테스트 광고
 //        } else {
-            mAdView.adUnitId = AdIds.BANNER_REAL_ID // 실제 광고
+//            mAdView.adUnitId = AdIds.BANNER_REAL_ID // 실제 광고
 //        }
 
         val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
