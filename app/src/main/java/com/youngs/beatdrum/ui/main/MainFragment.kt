@@ -18,8 +18,6 @@ import com.youngs.beatdrum.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
-    lateinit var mAdView: AdView
-
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -57,17 +55,8 @@ class MainFragment : Fragment() {
 
         MobileAds.initialize(requireContext())
 
-        mAdView = binding.adView
-
-
-//        if (resources.getBoolean(R.bool.is_debug_build)) {
-//            mAdView.adUnitId = AdIds.BANNER_TEST_ID // 테스트 광고
-//        } else {
-//            mAdView.adUnitId = AdIds.BANNER_REAL_ID // 실제 광고
-//        }
-
         val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        binding.adView.loadAd(adRequest)
 
         viewModel.menuItems.observe(viewLifecycleOwner) { items ->
             binding.buttonContainer.removeAllViews()
