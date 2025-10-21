@@ -57,8 +57,6 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:layout_marginBottom="8dp" />
-
-
     </LinearLayout>
 
     <Button
