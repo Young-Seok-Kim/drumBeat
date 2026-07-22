@@ -13,15 +13,18 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:elevation="6dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                android:title="@string/app_name"
-                android:titleTextColor="@android:color/white" />
+                android:theme="@style/Theme.BeatDrum.Toolbar"
+                app:titleTextColor="@android:color/white"
+                android:title="@string/app_name" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- FragmentContainerView: 네비게이션 호스트, weight=1 -->
@@ -44,7 +47,11 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="280dp"
+        android:layout_width="288dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start" />
+        android:layout_gravity="start"
+        android:background="@color/white"
+        app:headerLayout="@layout/nav_header"
+        app:itemTextColor="@color/bd_text_primary"
+        app:itemIconTint="@color/bd_primary" />
 </androidx.drawerlayout.widget.DrawerLayout>

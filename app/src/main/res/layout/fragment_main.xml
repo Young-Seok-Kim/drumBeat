@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bd_bg_gradient"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- 버튼 + 스크롤 영역 -->
@@ -23,6 +24,26 @@
             android:gravity="center"
             android:padding="16dp">
 
+            <!-- 헤더 -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="🥁 Beat Drum"
+                android:textColor="@color/bd_text_primary"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.02" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="28dp"
+                android:text="초견 강화 · 음성 메트로놈"
+                android:textColor="@color/bd_text_secondary"
+                android:textSize="14sp" />
+
             <!-- 버튼 컨테이너 -->
             <LinearLayout
                 android:id="@+id/buttonContainer"
@@ -30,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:padding="16dp" >
+                android:padding="8dp" >
             </LinearLayout>
 
         </LinearLayout>

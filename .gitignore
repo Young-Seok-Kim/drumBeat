@@ -15,3 +15,9 @@
 .cxx
 local.properties
 app/release/
+
+# [서명 키(Keystore) - 보안 필수: 깃허브에 올리지 않음]
+*.jks
+*.keystore
+key.properties
+keystore.properties

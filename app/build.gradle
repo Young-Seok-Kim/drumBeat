@@ -9,14 +9,14 @@ plugins {
 
 android {
     namespace = "com.youngs.beatdrum"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.youngs.beatdrum"
         minSdk = 27
-        targetSdk = 35
-        versionCode = 5
-        versionName = "1.3"
+        targetSdk = 36
+        versionCode = 6
+        versionName = "1.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true

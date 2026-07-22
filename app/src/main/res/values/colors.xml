@@ -8,4 +8,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- BeatDrum 브랜드 팔레트 -->
+    <color name="bd_primary">#6C4AB6</color>
+    <color name="bd_primary_dark">#4A2E8F</color>
+    <color name="bd_accent">#FF7A59</color>
+    <color name="bd_on_primary">#FFFFFFFF</color>
+    <color name="bd_bg_top">#F6F3FF</color>
+    <color name="bd_bg_bottom">#E9E2FF</color>
+    <color name="bd_text_primary">#211B33</color>
+    <color name="bd_text_secondary">#6E6789</color>
 </resources>

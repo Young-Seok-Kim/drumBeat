@@ -64,14 +64,25 @@ class MainFragment : Fragment() {
                 if (item.id == 1){
                     return@forEach
                 }
+                val density = resources.displayMetrics.density
+                fun dp(v: Int) = (v * density).toInt()
+
                 val btn = Button(requireContext()).apply {
                     text = getString(item.titleStringId)
+                    isAllCaps = false
+                    textSize = 17f
+                    setTextColor(resources.getColor(R.color.bd_on_primary, null))
+                    background = resources.getDrawable(R.drawable.bd_menu_button, null)
+                    stateListAnimator = null
+                    elevation = dp(3).toFloat()
                     layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dp(60)
                     ).apply {
-                        marginStart = 16
-                        marginEnd = 16
+                        marginStart = dp(20)
+                        marginEnd = dp(20)
+                        topMargin = dp(9)
+                        bottomMargin = dp(9)
                     }
                     setOnClickListener { viewModel.onMenuSelected(item) }
                 }
