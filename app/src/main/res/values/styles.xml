@@ -16,11 +16,12 @@
     </style>
 
     <!-- 예시 styles -->
-    <!-- 음표를 서로 딱 붙여서 표시하기 위해 이미지 폭에 맞춰 크기 조절(adjustViewBounds),
-         weight로 칸을 나누지 않고 wrap_content로 이미지 실제 폭만 차지하게 함 -->
+    <!-- 음표 이미지는 모두 동일한 250x100(2.5:1). weight=1로 4칸을 균등 분할해 크기를 똑같이 하고,
+         adjustViewBounds로 칸 너비에 맞춰 높이를 계산 → 여백 없이 서로 딱 붙게 표시 -->
     <style name="NumberImageView">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">110dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitCenter</item>
     </style>

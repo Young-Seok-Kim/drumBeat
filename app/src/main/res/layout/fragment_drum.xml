@@ -14,9 +14,9 @@
         android:gravity="center"
         android:padding="0dp">
 
-        <!-- 이미지 배치 (음표를 서로 딱 붙여서 가운데 정렬) -->
+        <!-- 이미지 배치 (weight로 4등분 → 음표 크기 동일 + 서로 딱 붙음) -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
