@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.android.gms.ads.MobileAds
 import com.youngs.beatdrum.databinding.FragmentSelfBeatBinding
 
 class SelfBeatFragment : Fragment() {
-
     private var _binding: FragmentSelfBeatBinding? = null
     private val binding get() = _binding!!
 
@@ -41,11 +39,6 @@ class SelfBeatFragment : Fragment() {
     private var noteTypeMultiplier = 1 // 메트로놈과 동일하게 추가
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        MobileAds.initialize(requireContext())
-
-        val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
 
         binding.textViewBpm.text = ""
 
@@ -91,7 +84,6 @@ class SelfBeatFragment : Fragment() {
             }
         }
     }
-
 
     private fun startSelfBeat(intervalMs: Long) {
         isRunning = true

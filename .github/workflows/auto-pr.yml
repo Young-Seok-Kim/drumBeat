@@ -1,0 +1,59 @@
+# main_qa 에 push 되면 main 으로 가는 PR 을 자동으로 만든다.
+#
+# 작업은 main_qa 에서 하고 main 은 배포 트리거다 (deploy.yml).
+# "언제 배포할지"는 사람이 PR 머지 버튼으로 정한다. 이 워크플로는 그 버튼이 늘 준비돼 있게 할 뿐이다.
+#
+# - 열린 PR 이 없으면 만든다. 있으면 제목·본문만 최신 커밋에 맞춰 고친다.
+#   (PR 은 브랜치를 따라가므로 push 할 때마다 새로 만들 필요가 없다)
+# - 본문은 main 에 아직 없는 커밋 목록이다. 머지하면 무엇이 배포되는지 한눈에 보인다.
+#
+# 저장소 Settings → Actions → General → Workflow permissions 에서
+# "Allow GitHub Actions to create and approve pull requests" 가 켜져 있어야 한다.
+# 꺼져 있으면 gh pr create 가 "GitHub Actions is not permitted to create or approve pull requests" 로 실패한다.
+name: main_qa → main PR
+
+on:
+  push:
+    branches: [main_qa]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # main 과의 차이를 세려면 두 브랜치 이력이 모두 필요하다
+          fetch-depth: 0
+
+      - name: PR 만들기 또는 갱신
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch origin main --quiet
+
+          if git merge-base --is-ancestor HEAD origin/main; then
+            echo "main 에 없는 커밋이 없다. PR 을 만들지 않는다."
+            exit 0
+          fi
+
+          title="$(git log -1 --pretty=%s)"
+          count="$(git rev-list --count origin/main..HEAD)"
+          {
+            echo "main_qa → main. 머지하면 versionCode 가 올랐을 때 앱이 Play 프로덕션에 자동 배포된다 (deploy.yml)."
+            echo
+            echo "### 들어가는 커밋 (${count}건)"
+            echo
+            git log origin/main..HEAD --pretty='- %s'
+          } > /tmp/body.md
+
+          existing="$(gh pr list --head main_qa --base main --state open --json number --jq '.[0].number')"
+          if [ -n "$existing" ]; then
+            gh pr edit "$existing" --title "$title" --body-file /tmp/body.md
+            echo "PR #$existing 갱신"
+          else
+            gh pr create --base main --head main_qa --title "$title" --body-file /tmp/body.md
+          fi

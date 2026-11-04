@@ -1,0 +1,102 @@
+# 배포 시크릿·권한 점검. 아무것도 올리지 않는다.
+#
+# deploy.yml 은 실패하면 "반쯤 올라간" 상태가 남을 수 있어서, 시크릿을 넣거나 바꾼 뒤에는
+# 여기로 먼저 확인한다. 각 시크릿이 실제 쓰이는 방식 그대로 읽어 본다.
+#
+#   PLAY_SERVICE_ACCOUNT_JSON → Play 에 편집 세션을 열었다 바로 지운다 (출시 관리 권한이 있는지)
+#   KEYSTORE_*                → keytool 로 키스토어를 열어 별칭을 찾는다 (비밀번호·별칭이 맞는지)
+#   CHANGELOG.md              → 스토어 문구 블록이 뽑히는지
+#
+# 워크플로 파일을 고쳐 main_qa 에 push 하면 자동으로 돌고, Actions 탭에서 수동으로도 돌릴 수 있다.
+name: Preflight (배포 점검)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main_qa]
+    paths: ['.github/workflows/**']
+
+jobs:
+  play:
+    name: Play 서비스 계정
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --quiet google-auth requests
+
+      - env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          [ -n "$PLAY_SERVICE_ACCOUNT_JSON" ] || { echo "::error::PLAY_SERVICE_ACCOUNT_JSON 시크릿이 없다"; exit 1; }
+          printf '%s' "$PLAY_SERVICE_ACCOUNT_JSON" > "$RUNNER_TEMP/play.json"
+          echo "계정: $(jq -r .client_email "$RUNNER_TEMP/play.json")"
+          python - "$RUNNER_TEMP/play.json" <<'PY'
+          import sys
+          from google.oauth2 import service_account
+          from google.auth.transport.requests import AuthorizedSession
+
+          pkg = "com.youngs.beatdrum"
+          base = f"https://androidpublisher.googleapis.com/androidpublisher/v3/applications/{pkg}/edits"
+          creds = service_account.Credentials.from_service_account_file(
+              sys.argv[1], scopes=["https://www.googleapis.com/auth/androidpublisher"])
+          s = AuthorizedSession(creds)
+
+          # 편집 세션을 열 수 있으면 업로드 권한이 있는 것이다. 바로 지워서 아무것도 남기지 않는다.
+          r = s.post(base)
+          if r.status_code != 200:
+              print(f"::error::Play 편집 세션 열기 실패 {r.status_code}: {r.text[:400]}")
+              print("Play Console → 사용자 및 권한에서 이 계정이 이 앱에 '출시 관리' 권한으로 초대됐는지, "
+                    "초대 후 시간이 지났는지 확인")
+              sys.exit(1)
+          edit_id = r.json()["id"]
+          tracks = s.get(f"{base}/{edit_id}/tracks").json().get("tracks", [])
+          for t in tracks:
+              for rel in t.get("releases", []):
+                  print(f"트랙 {t['track']}: {rel.get('name')} {rel.get('status')} versionCodes={rel.get('versionCodes')}")
+          s.delete(f"{base}/{edit_id}")
+          print("Play 권한 OK")
+          PY
+
+  signing:
+    name: 서명 키 · CHANGELOG
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: temurin
+
+      - env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          missing=""
+          for v in KEYSTORE_BASE64 KEYSTORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            [ -z "${!v}" ] && missing="$missing $v"
+          done
+          [ -z "$missing" ] || { echo "::error::시크릿이 없다:$missing"; exit 1; }
+
+          echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/key.jks" \
+            || { echo "::error::KEYSTORE_BASE64 가 base64 가 아니다"; exit 1; }
+          # 별칭의 키 비밀번호까지 맞는지는 -keypass 로 확인한다 (틀리면 여기서 실패)
+          keytool -list -v -keystore "$RUNNER_TEMP/key.jks" -storepass "$KEYSTORE_PASSWORD" \
+            -alias "$KEY_ALIAS" -keypass "$KEY_PASSWORD" | grep -E "Alias name|Valid from|SHA256:" \
+            || { echo "::error::키스토어를 열지 못했다 (비밀번호 또는 별칭)"; exit 1; }
+
+      - name: CHANGELOG 스토어 문구
+        run: |
+          awk '
+            /^## v/ { if (seen) exit; seen = 1; next }
+            seen && /^### 스토어 문구/ { grab = 1; next }
+            seen && grab && /^### / { exit }
+            grab { print }
+          ' CHANGELOG.md | sed -e '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' > "$RUNNER_TEMP/whatsnew"
+          [ -s "$RUNNER_TEMP/whatsnew" ] || { echo "::error::스토어 문구 블록이 없다"; exit 1; }
+          echo "($(wc -m < "$RUNNER_TEMP/whatsnew")자)"; cat "$RUNNER_TEMP/whatsnew"

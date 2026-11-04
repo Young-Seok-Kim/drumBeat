@@ -21,3 +21,6 @@ app/release/
 *.keystore
 key.properties
 keystore.properties
+
+# Kotlin 컴파일러 세션 캐시
+.kotlin/

@@ -19,7 +19,6 @@
         tools:text="BPM : 130"
         android:layout_marginTop="16dp" />
 
-
     <TextView
         android:id="@+id/textViewInfo"
         android:layout_width="wrap_content"
@@ -42,14 +41,5 @@
         android:paddingTop="40dp"
         android:paddingBottom="40dp"
         android:layout_marginBottom="16dp"/>
-
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/ads_banner"/>
-
 
 </LinearLayout>

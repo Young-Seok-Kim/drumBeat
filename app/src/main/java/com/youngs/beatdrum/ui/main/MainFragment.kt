@@ -10,14 +10,10 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
-import com.youngs.beatdrum.AdIds
 import com.youngs.beatdrum.R
 import com.youngs.beatdrum.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
-
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -52,11 +48,6 @@ class MainFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        MobileAds.initialize(requireContext())
-
-        val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
 
         viewModel.menuItems.observe(viewLifecycleOwner) { items ->
             binding.buttonContainer.removeAllViews()
