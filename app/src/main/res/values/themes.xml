@@ -7,13 +7,16 @@
         <item name="colorSecondary">@color/bd_accent</item>
         <item name="colorSecondaryVariant">@color/bd_accent</item>
         <item name="colorOnSecondary">@color/white</item>
-        <item name="android:statusBarColor">@color/bd_primary_dark</item>
+        <!-- 상단바를 없앴으므로 상태 표시줄은 배경색에 녹이고 아이콘을 어둡게 -->
+        <item name="android:statusBarColor">@color/bd_bg_top</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/bd_surface</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowBackground">@color/bd_bg_top</item>
         <item name="colorControlActivated">@color/bd_primary</item>
+        <item name="android:textColorPrimary">@color/bd_text_primary</item>
+        <item name="android:textColorSecondary">@color/bd_text_secondary</item>
     </style>
-
-    <!-- 툴바를 어두운 오버레이로 → 햄버거 아이콘/타이틀이 흰색으로 보이게 -->
-    <style name="Theme.BeatDrum.Toolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
     <!-- 라운드 강조 버튼 스타일 (시작/탭 등) -->
     <style name="BdButton" parent="Widget.MaterialComponents.Button">
@@ -24,5 +27,14 @@
         <item name="android:paddingTop">14dp</item>
         <item name="android:paddingBottom">14dp</item>
         <item name="backgroundTint">@color/bd_primary</item>
+    </style>
+
+    <!-- 보조 버튼 (테두리만) -->
+    <style name="BdButton.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">15sp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="strokeColor">@color/bd_primary</item>
+        <item name="android:textColor">@color/bd_primary</item>
     </style>
 </resources>

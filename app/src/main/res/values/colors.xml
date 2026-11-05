@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_100">#E1BEE7</color>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- BeatDrum 브랜드 팔레트 -->
-    <color name="bd_primary">#6C4AB6</color>
-    <color name="bd_primary_dark">#4A2E8F</color>
-    <color name="bd_accent">#FF7A59</color>
+    <!-- BeatDrum 팔레트: 청록(teal) 기본색 + 호박색(amber) 강조 -->
+    <color name="bd_primary">#0F766E</color>
+    <color name="bd_primary_dark">#115E59</color>
+    <color name="bd_primary_light">#5EEAD4</color>
+    <color name="bd_accent">#F59E0B</color>
     <color name="bd_on_primary">#FFFFFFFF</color>
-    <color name="bd_bg_top">#F6F3FF</color>
-    <color name="bd_bg_bottom">#E9E2FF</color>
-    <color name="bd_text_primary">#211B33</color>
-    <color name="bd_text_secondary">#6E6789</color>
+    <color name="bd_bg_top">#F0FDFA</color>
+    <color name="bd_bg_bottom">#CCFBF1</color>
+    <color name="bd_surface">#FFFFFFFF</color>
+    <color name="bd_text_primary">#0F172A</color>
+    <color name="bd_text_secondary">#5B6B7A</color>
+    <color name="bd_nav_unselected">#8A9AA8</color>
 </resources>

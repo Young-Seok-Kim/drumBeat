@@ -17,8 +17,6 @@ import android.widget.AdapterView
 import android.widget.SeekBar
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.youngs.beatdrum.R
 import com.youngs.beatdrum.data.Settings
 import com.youngs.beatdrum.databinding.FragmentMetronomeBinding
@@ -60,12 +58,24 @@ class MetronomeFragment : Fragment() {
         }
     }
 
-    // 초견 화면에서 박자표를 바꾸면 메트로놈 스피너도 따라간다 (같은 설정 키를 본다)
+    // 초견 화면에서 박자표를 바꾸면 메트로놈 스피너도 따라간다 (같은 설정 키를 본다).
+    // BPM 측정 화면의 "메트로놈에 적용"도 같은 방식으로 KEY_BPM 으로 들어온다.
     private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == Settings.KEY_TIME_SIG_POS && _binding != null) {
-            val pos = prefs.getInt(key, Settings.DEFAULT_TIME_SIG_POS)
-            if (binding.spinnerTimeSignature.selectedItemPosition != pos) {
-                binding.spinnerTimeSignature.setSelection(pos)
+        if (_binding == null) return@OnSharedPreferenceChangeListener
+        when (key) {
+            Settings.KEY_TIME_SIG_POS -> {
+                val pos = prefs.getInt(key, Settings.DEFAULT_TIME_SIG_POS)
+                if (binding.spinnerTimeSignature.selectedItemPosition != pos) {
+                    binding.spinnerTimeSignature.setSelection(pos)
+                }
+            }
+            Settings.KEY_BPM -> {
+                val value = prefs.getInt(key, Settings.DEFAULT_BPM)
+                if (value != bpm) {
+                    setBpm(value)
+                    binding.seekBarBpm.progress = bpm
+                    binding.editTextBpm.setText(bpm.toString())
+                }
             }
         }
     }
@@ -82,8 +92,6 @@ class MetronomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MobileAds.initialize(requireContext())
-        binding.adView.loadAd(AdRequest.Builder().build())
 
         prefs = Settings.prefs(requireContext())
         prefs.registerOnSharedPreferenceChangeListener(prefListener)

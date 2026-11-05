@@ -3,38 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/drumFragment">
 
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.youngs.beatdrum.ui.main.MainFragment"
-        android:label="메인 화면"
-        tools:layout="@layout/fragment_main">
-        <action
-            android:id="@+id/action_main_to_drumFragment"
-            app:destination="@id/drumFragment" />
-        <action
-            android:id="@+id/action_main_to_settingsFragment"
-            app:destination="@id/selfBeatFragment" />
-<!--        <action-->
-<!--            android:id="@+id/action_main_to_helpFragment"-->
-<!--            app:destination="@id/helpFragment" />-->
-    </fragment>
-
+    <!-- 하단 탭(menu/bottom_nav.xml)의 항목 id 와 같은 id 를 쓴다 -->
     <fragment
         android:id="@+id/drumFragment"
         android:name="com.youngs.beatdrum.ui.sightread.SightreadFragment"
         tools:layout="@layout/fragment_drum"
-        android:label="드럼 화면" />
+        android:label="@string/sightread" />
 
     <fragment
         android:id="@+id/selfBeatFragment"
         android:name="com.youngs.beatdrum.ui.selfbeat.SelfBeatFragment"
         tools:layout="@layout/fragment_self_beat"
-        android:label="BPM 측정" />
-
-<!--    <fragment-->
-<!--        android:id="@+id/helpFragment"-->
-<!--        android:name="com.youngs.drumbeat.ui.help.HelpFragment"-->
-<!--        android:label="도움말" />-->
+        android:label="@string/measure_bpm" />
 </navigation>

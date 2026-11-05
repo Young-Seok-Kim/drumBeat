@@ -11,116 +11,153 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="0dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp">
 
-        <!-- 이미지 배치 (weight로 4등분 → 음표 크기 동일 + 서로 딱 붙음) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp">
-
-            <ImageView
-                android:id="@+id/image1"
-                style="@style/NumberImageView"
-                tools:src="@drawable/sightread_beat1" />
-
-            <ImageView
-                android:id="@+id/image2"
-                style="@style/NumberImageView"
-                tools:src="@drawable/sightread_beat1" />
-
-            <ImageView
-                android:id="@+id/image3"
-                style="@style/NumberImageView"
-                tools:src="@drawable/sightread_beat1" />
-
-            <ImageView
-                android:id="@+id/image4"
-                style="@style/NumberImageView"
-                tools:src="@drawable/sightread_beat1" />
-
-        </LinearLayout>
-
-        <!-- 남은 시간 표시 -->
+        <!-- 화면 제목 (상단바가 없으므로 여기서) -->
         <TextView
-            android:id="@+id/textViewRemainingTime"
-            style="@style/RemainingTimeTextView"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="@string/sightread_remaining_none" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/sightread"
+            android:textColor="@color/bd_text_primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-        <!-- ProgressBar -->
-        <ProgressBar
-            android:id="@+id/progressBarTimer"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:max="100"
-            android:progress="100"
-            android:progressTint="@color/purple_500"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp"/>
-
-        <!-- 악보고정 + 박자 선택 -->
+        <!-- 악보 카드: 음표 이미지 + 남은 시간 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="24dp">
+            android:orientation="vertical"
+            android:background="@drawable/bd_card"
+            android:elevation="2dp"
+            android:padding="12dp">
 
-            <CheckBox
-                android:id="@+id/checkBoxFixScore"
-                android:layout_width="wrap_content"
+            <!-- weight로 4등분 → 음표 크기 동일 + 서로 딱 붙음 -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sightread_fix_score" />
+                android:orientation="horizontal"
+                android:gravity="center">
 
-            <Spinner
-                android:id="@+id/spinnerTimeSignature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/time_signature_array"
-                android:layout_marginStart="16dp"/>
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/image1"
+                    style="@style/NumberImageView"
+                    tools:src="@drawable/sightread_beat1" />
 
-        <!-- 시간 입력 -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="24dp">
+                <ImageView
+                    android:id="@+id/image2"
+                    style="@style/NumberImageView"
+                    tools:src="@drawable/sightread_beat1" />
+
+                <ImageView
+                    android:id="@+id/image3"
+                    style="@style/NumberImageView"
+                    tools:src="@drawable/sightread_beat1" />
+
+                <ImageView
+                    android:id="@+id/image4"
+                    style="@style/NumberImageView"
+                    tools:src="@drawable/sightread_beat1" />
+            </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewRemainingTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sightread_time_label"
-                android:textSize="18sp" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="14dp"
+                android:text="@string/sightread_remaining_none"
+                android:textColor="@color/bd_text_secondary"
+                android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/editTextTime"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="2"
-                android:hint="@string/sightread_seconds_hint"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:ems="3" />
+            <ProgressBar
+                android:id="@+id/progressBarTimer"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="100"
+                android:progressTint="@color/bd_primary"
+                android:progressBackgroundTint="@color/bd_bg_bottom" />
         </LinearLayout>
 
-        <!-- 시작/종료 버튼 -->
+        <!-- 설정 카드: 악보고정 · 박자표 · 시간 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical"
+            android:background="@drawable/bd_card"
+            android:elevation="2dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:id="@+id/checkBoxFixScore"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/sightread_fix_score"
+                    android:textColor="@color/bd_text_primary"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerTimeSignature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:entries="@array/time_signature_array" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="6dp"
+                    android:text="@string/sightread_time_label"
+                    android:textColor="@color/bd_text_primary"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/editTextTime"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:hint="@string/sightread_seconds_hint"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:importantForAutofill="no" />
+            </LinearLayout>
+        </LinearLayout>
+
         <Button
             android:id="@+id/buttonStartStop"
             style="@style/BdButton"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="@string/start" />
+            android:layout_marginTop="16dp"
+            android:text="@string/start"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </ScrollView>

@@ -11,6 +11,24 @@
 
 ---
 
+## v1.6.1 (b9) — 2026-11-05 화면 구조 정리(하단 탭·상단바 제거), 청록색 테마, 광고 즉시 표시
+
+### 스토어 문구
+
+화면을 새로 정리했습니다. 상단바와 메뉴 서랍을 없애고 아래쪽 탭으로 초견과 BPM 측정을 바로 오갑니다.
+색을 청록색 계열로 바꿨습니다. BPM을 잰 뒤 "메트로놈에 적용"을 누르면 메트로놈 템포가 바로 맞춰집니다.
+광고가 뜨는 데 걸리던 시간을 줄였고, 화면을 옮겨도 다시 뜨기를 기다리지 않습니다.
+
+### 상세 내역
+
+- 구조: Toolbar·DrawerLayout·NavigationView·메인 메뉴 화면(MainFragment/MainViewModel/MenuItem) 삭제.
+  BottomNavigationView(초견·BPM 측정) + NavigationUI.setupWithNavController. 시작 화면은 초견.
+- 색: bd_* 팔레트를 보라에서 청록(#0F766E)/호박색 강조로 교체. 상태 표시줄은 배경색에 녹이고 아이콘 어둡게.
+- 레이아웃: 초견·BPM 화면을 카드형(bd_card)으로 재구성, 화면 제목을 각 화면 안에 둠. 메트로놈 바는 가로 꽉 채움.
+- BPM 측정: "메트로놈에 적용" 버튼(KEY_BPM 저장 → MetronomeFragment 가 pref 리스너로 반영).
+- 광고: SDK 초기화를 Application.onCreate 백그라운드로(BeatDrumApp.kt), 화면마다 있던 AdView 3개를
+  activity_main.xml 상단 배너 하나로 합침. resume/pause/destroy 를 액티비티 생명주기에 연결.
+
 ## v1.6 (b8) — 2026-11-05 메트로놈 박자표·정확한 타이밍·클릭음, 설정 기억
 
 ### 스토어 문구

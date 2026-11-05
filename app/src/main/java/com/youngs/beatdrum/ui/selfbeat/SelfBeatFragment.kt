@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.youngs.beatdrum.R
 import com.youngs.beatdrum.data.Settings
 import com.youngs.beatdrum.databinding.FragmentSelfBeatBinding
@@ -18,6 +17,7 @@ class SelfBeatFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val tapTimes = mutableListOf<Long>() // 탭 시각 기록
+    private var lastBpm: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,18 +29,15 @@ class SelfBeatFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MobileAds.initialize(requireContext())
-        binding.adView.loadAd(AdRequest.Builder().build())
-
-        binding.textViewBpm.text = ""
 
         binding.buttonTap.setOnClickListener {
             val now = System.currentTimeMillis()
             // 3초 넘게 쉬었다가 다시 누르면 새로 측정한다. 이전 탭과 섞이면 평균이 엉뚱해진다.
             if (tapTimes.isNotEmpty() && now - tapTimes.last() > 3000) {
                 tapTimes.clear()
-                binding.textViewBpm.text = ""
+                binding.textViewBpm.text = getString(R.string.selfbeat_bpm_placeholder)
                 binding.textViewInfo.text = getString(R.string.selfbeat_4click)
+                binding.buttonApply.visibility = View.INVISIBLE
             }
             tapTimes.add(now)
 
@@ -66,6 +63,15 @@ class SelfBeatFragment : Fragment() {
 
             binding.textViewBpm.text = getString(R.string.selfbeat_bpm_format, bpm)
             binding.textViewInfo.text = getString(R.string.selfbeat_measuring)
+            lastBpm = bpm
+            binding.buttonApply.visibility = View.VISIBLE
+        }
+
+        // 잰 값을 메트로놈 BPM 으로. 같은 설정 키를 메트로놈이 듣고 있어서 바로 반영된다.
+        binding.buttonApply.setOnClickListener {
+            val bpm = lastBpm?.coerceIn(30, 240) ?: return@setOnClickListener
+            Settings.prefs(requireContext()).edit { putInt(Settings.KEY_BPM, bpm) }
+            Toast.makeText(requireContext(), getString(R.string.selfbeat_applied, bpm), Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">drumBeat</string>
-    <string name="navigation_drawer_open">Open menu</string>
-    <string name="navigation_drawer_close">Close menu</string>
     <string name="selfbeat_4click">Press the button four or more times \n Set the tempo</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="sightread">Sightread</string>
-    <string name="main">Main</string>
     <string name="measure_bpm">Measure BPM</string>
     <string name="bpm_label">BPM:</string>
     <string name="press_back_again">Press back again to exit.</string>
+    <string name="selfbeat_apply_to_metronome">Apply to metronome</string>
+    <string name="selfbeat_applied">Metronome set to %1$d BPM.</string>
     <string name="selfbeat_tap">Tap to measure</string>
     <string name="selfbeat_too_fast">Taps are too close together. Try again.</string>
     <string name="selfbeat_measuring">Measuring… (average of last 4 taps)</string>
