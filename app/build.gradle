@@ -15,8 +15,8 @@ android {
         applicationId = "com.youngs.beatdrum"
         minSdk = 27
         targetSdk = 36
-        versionCode = 8
-        versionName = "1.6"
+        versionCode = 7
+        versionName = "1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
@@ -78,6 +78,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation 'com.google.android.gms:play-services-ads:24.5.0'
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

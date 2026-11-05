@@ -15,10 +15,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import com.google.android.gms.ads.MobileAds
 import com.youngs.beatdrum.R
 import com.youngs.beatdrum.databinding.FragmentMetronomeBinding
 
 class MetronomeFragment : Fragment() {
+
     private var _binding: FragmentMetronomeBinding? = null
     private val binding get() = _binding!!
 
@@ -62,6 +64,10 @@ class MetronomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        MobileAds.initialize(requireContext())
+
+        val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
 
         toneGen = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
         initViews()
@@ -111,6 +117,7 @@ class MetronomeFragment : Fragment() {
             } else false
         }
 
+
         binding.spinnerNote.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 noteTypeMultiplier = when (position) {
@@ -122,6 +129,8 @@ class MetronomeFragment : Fragment() {
             }
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+
+
 
         // 시작/정지 버튼
         binding.buttonStartStop.setOnClickListener {

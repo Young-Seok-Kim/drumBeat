@@ -1,7 +1,7 @@
 # Beat Drum — 초견 강화 / 음성 메트로놈
 
 드럼 초견 연습과 메트로놈, 셀프 비트 측정 기능을 제공하는 Android 앱입니다.
-패키지명 `com.youngs.beatdrum`. 광고·결제 없이 무료로 제공합니다.
+패키지명 `com.youngs.beatdrum`.
 
 ## 브랜치와 배포 (CI/CD)
 
