@@ -8,6 +8,20 @@
     <string name="sightread">초견</string>
     <string name="main">메인</string>
     <string name="measure_bpm">BPM 측정</string>
+    <string name="bpm_label">BPM:</string>
+    <string name="press_back_again">한 번 더 누르면 앱이 종료됩니다.</string>
+    <string name="selfbeat_tap">탭하여 측정</string>
+    <string name="selfbeat_too_fast">간격이 너무 짧아요. 다시 시도해주세요.</string>
+    <string name="selfbeat_measuring">측정 중… (최근 4회 평균)</string>
+    <string name="selfbeat_bpm_format">%1$d BPM</string>
+    <string name="sightread_fix_score">악보고정</string>
+    <string name="sightread_time_label">시간 (1~10초): </string>
+    <string name="sightread_seconds_hint">초</string>
+    <string name="sightread_remaining">남은 시간: %1$d 초</string>
+    <string name="sightread_remaining_none">남은 시간: -</string>
+    <string name="sightread_stopped">중지됨</string>
+    <string name="sightread_time_range">시간을 1초에서 10초 사이로 입력해주세요.</string>
+    <string name="sightread_started">%1$d 초마다 악보가 바뀝니다.</string>
     <string-array name="time_signature_array">
         <item>2/4</item>
         <item>3/4</item>

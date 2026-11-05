@@ -1,14 +1,15 @@
 package com.youngs.beatdrum.ui.selfbeat
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.youngs.beatdrum.R
+import com.youngs.beatdrum.data.Settings
 import com.youngs.beatdrum.databinding.FragmentSelfBeatBinding
 
 class SelfBeatFragment : Fragment() {
@@ -16,20 +17,7 @@ class SelfBeatFragment : Fragment() {
     private var _binding: FragmentSelfBeatBinding? = null
     private val binding get() = _binding!!
 
-    private val tapTimes = mutableListOf<Long>() // 클릭 시각 기록 리스트
-    private var intervalMillis: Long = 0L
-    private var isRunning = false
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val tickRunnable = object : Runnable {
-        override fun run() {
-            if (isRunning && intervalMillis > 0) {
-                // 소리 제거 → 아무 동작 안 함, 단순 주기 유지
-                handler.postDelayed(this, intervalMillis)
-            }
-        }
-    }
+    private val tapTimes = mutableListOf<Long>() // 탭 시각 기록
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,75 +26,52 @@ class SelfBeatFragment : Fragment() {
         _binding = FragmentSelfBeatBinding.inflate(inflater, container, false)
         return binding.root
     }
-    private var noteTypeMultiplier = 1 // 메트로놈과 동일하게 추가
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         MobileAds.initialize(requireContext())
-
-        val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+        binding.adView.loadAd(AdRequest.Builder().build())
 
         binding.textViewBpm.text = ""
 
-        // 예시: noteTypeMultiplier를 메트로놈 스피너와 동일하게 맞추기
-        // UI에서 선택할 수 있도록 하거나, 메트로놈에서 직접 가져올 수도 있음
-        // 여기선 간단히 4분음표 기준으로 고정 예시
-        noteTypeMultiplier = 1
-
         binding.buttonTap.setOnClickListener {
-            val currentTime = System.currentTimeMillis()
-            tapTimes.add(currentTime)
-
-            if (tapTimes.size >= 4) {
-                val lastTaps = tapTimes.takeLast(4)
-                val intervals = mutableListOf<Long>()
-                for (i in 1 until lastTaps.size) {
-                    intervals.add(lastTaps[i] - lastTaps[i - 1])
-                }
-                val avgInterval = intervals.average().toLong()
-
-                if (avgInterval < 200) {
-                    Toast.makeText(
-                        requireContext(),
-                        "간격이 너무 짧아요. 다시 시도해주세요.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    tapTimes.clear()
-                    stopSelfBeat()
-                    return@setOnClickListener
-                }
-
-                intervalMillis = avgInterval
-
-                // 메트로놈과 동일하게 noteTypeMultiplier 반영
-                val bpm = (60000.0 / (avgInterval / noteTypeMultiplier.toDouble())).toInt()
-
-                binding.textViewBpm.text = "$bpm BPM"
-                binding.textViewInfo.text = "측정 중... (최근 4회 평균)"
-
-                if (!isRunning) {
-                    startSelfBeat(intervalMillis)
-                }
+            val now = System.currentTimeMillis()
+            // 3초 넘게 쉬었다가 다시 누르면 새로 측정한다. 이전 탭과 섞이면 평균이 엉뚱해진다.
+            if (tapTimes.isNotEmpty() && now - tapTimes.last() > 3000) {
+                tapTimes.clear()
+                binding.textViewBpm.text = ""
+                binding.textViewInfo.text = getString(R.string.selfbeat_4click)
             }
+            tapTimes.add(now)
+
+            if (tapTimes.size < 4) return@setOnClickListener
+
+            val lastTaps = tapTimes.takeLast(4)
+            val avgInterval = (1 until lastTaps.size)
+                .map { lastTaps[it] - lastTaps[it - 1] }
+                .average()
+
+            if (avgInterval < 200) {
+                Toast.makeText(requireContext(), R.string.selfbeat_too_fast, Toast.LENGTH_SHORT).show()
+                tapTimes.clear()
+                return@setOnClickListener
+            }
+
+            // 메트로놈에서 고른 음표 단위로 탭한 것으로 본다.
+            // 8분음표로 탭하면 4분음표 BPM 은 탭 간격 BPM 의 절반이다.
+            val multiplier = Settings.noteMultiplier(
+                Settings.prefs(requireContext()).getInt(Settings.KEY_NOTE_POS, 0)
+            )
+            val bpm = (60_000.0 / avgInterval / multiplier).toInt()
+
+            binding.textViewBpm.text = getString(R.string.selfbeat_bpm_format, bpm)
+            binding.textViewInfo.text = getString(R.string.selfbeat_measuring)
         }
-    }
-
-
-    private fun startSelfBeat(intervalMs: Long) {
-        isRunning = true
-        handler.post(tickRunnable)
-    }
-
-    private fun stopSelfBeat() {
-        isRunning = false
-        handler.removeCallbacks(tickRunnable)
-        tapTimes.clear()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        stopSelfBeat()
+        tapTimes.clear()
         _binding = null
     }
 }

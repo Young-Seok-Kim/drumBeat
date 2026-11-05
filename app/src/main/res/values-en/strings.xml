@@ -9,4 +9,18 @@
     <string name="sightread">Sightread</string>
     <string name="main">Main</string>
     <string name="measure_bpm">Measure BPM</string>
+    <string name="bpm_label">BPM:</string>
+    <string name="press_back_again">Press back again to exit.</string>
+    <string name="selfbeat_tap">Tap to measure</string>
+    <string name="selfbeat_too_fast">Taps are too close together. Try again.</string>
+    <string name="selfbeat_measuring">Measuring… (average of last 4 taps)</string>
+    <string name="selfbeat_bpm_format">%1$d BPM</string>
+    <string name="sightread_fix_score">Keep score</string>
+    <string name="sightread_time_label">Interval (1–10 s): </string>
+    <string name="sightread_seconds_hint">sec</string>
+    <string name="sightread_remaining">Time left: %1$d s</string>
+    <string name="sightread_remaining_none">Time left: -</string>
+    <string name="sightread_stopped">Stopped</string>
+    <string name="sightread_time_range">Enter a time between 1 and 10 seconds.</string>
+    <string name="sightread_started">The score changes every %1$d seconds.</string>
 </resources>

@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import com.youngs.beatdrum.AdIds
 import com.youngs.beatdrum.R
 import com.youngs.beatdrum.databinding.FragmentMainBinding
 
@@ -23,49 +20,23 @@ class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    private var lastBackPressed: Long = 0
-    private val BACK_INTERVAL = 2000L // 2초
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    val now = System.currentTimeMillis()
-                    if (now - lastBackPressed <= BACK_INTERVAL) {
-                        isEnabled = false
-                        requireActivity().finish()
-                    } else {
-                        lastBackPressed = now
-                        Toast.makeText(requireContext(), "한 번 더 뒤로가기를 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        )
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         MobileAds.initialize(requireContext())
-
-        val adRequest = com.google.android.gms.ads.AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+        binding.adView.loadAd(AdRequest.Builder().build())
 
         viewModel.menuItems.observe(viewLifecycleOwner) { items ->
             binding.buttonContainer.removeAllViews()
+            val density = resources.displayMetrics.density
+            fun dp(v: Int) = (v * density).toInt()
+
             items.forEach { item ->
-                if (item.id == 1){
-                    return@forEach
-                }
-                val density = resources.displayMetrics.density
-                fun dp(v: Int) = (v * density).toInt()
+                if (item.fragmentId == R.id.mainFragment) return@forEach
 
                 val btn = Button(requireContext()).apply {
                     text = getString(item.titleStringId)
