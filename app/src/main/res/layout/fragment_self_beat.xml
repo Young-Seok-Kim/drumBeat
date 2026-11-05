@@ -37,7 +37,7 @@
         style="@style/BdButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="탭하여 측정"
+        android:text="@string/selfbeat_tap"
         android:textSize="20sp"
         android:paddingTop="40dp"
         android:paddingBottom="40dp"

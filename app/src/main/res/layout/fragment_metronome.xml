@@ -27,6 +27,13 @@
             android:gravity="center_vertical">
 
             <Spinner
+                android:id="@+id/spinnerTimeSignature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:entries="@array/time_signature_array"/>
+
+            <Spinner
                 android:id="@+id/spinnerNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,7 +44,7 @@
                 android:id="@+id/textViewBpm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BPM:"
+                android:text="@string/bpm_label"
                 android:textSize="24sp" />
 
             <EditText
@@ -69,7 +76,7 @@
         style="@style/BdButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:text="Start" />
+        android:text="@string/start" />
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"

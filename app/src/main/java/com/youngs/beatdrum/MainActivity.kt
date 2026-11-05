@@ -9,10 +9,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navOptions
 import com.youngs.beatdrum.data.MenuItem
 import com.youngs.beatdrum.databinding.ActivityMainBinding
-import com.youngs.beatdrum.ui.main.MainFragment
 import com.youngs.beatdrum.ui.main.MainViewModel
 import com.youngs.beatdrum.ui.metronome.MetronomeFragment
 
@@ -20,56 +21,48 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var drawerToggle: ActionBarDrawerToggle
-
-    private var backPressedTime: Long = 0
-    private val BACK_PRESS_INTERVAL = 2000L
-
-    // 뷰모델 선언 (ViewModelProvider 등 상황에 맞게)
-    private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var navController: NavController
     private lateinit var metronomeFragment: MetronomeFragment
 
+    private var backPressedTime: Long = 0
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)  // 먼저 레이아웃 연결
+        setContentView(binding.root)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-
+        navController = navHostFragment.navController
         metronomeFragment = supportFragmentManager.findFragmentById(R.id.metronome_fragment) as MetronomeFragment
-
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             updateMetronomeVisibility(destination.id)
         }
 
+        // 뒤로가기는 여기 한 곳에서만 처리한다.
+        // 드로어 열림 → 닫기, 메인 아님 → 메인으로, 메인 → 두 번 누르면 종료.
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     binding.drawerLayout.closeDrawer(GravityCompat.START)
                     return
                 }
-                val navHostFragment = supportFragmentManager
-                    .findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
-                val currentFragment =
-                    navHostFragment?.childFragmentManager?.primaryNavigationFragment
-                if (currentFragment is MainFragment) {
-                    val currentTime = System.currentTimeMillis()
-                    if (currentTime - backPressedTime < BACK_PRESS_INTERVAL) {
-                        finish()
-                    } else {
-                        backPressedTime = currentTime
-                        Toast.makeText(this@MainActivity, "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                if (navController.currentDestination?.id != R.id.mainFragment) {
+                    goToMain()
+                    return
+                }
+                val now = System.currentTimeMillis()
+                if (now - backPressedTime < BACK_PRESS_INTERVAL) {
+                    finish()
                 } else {
-                    navController.navigate(R.id.mainFragment)
+                    backPressedTime = now
+                    Toast.makeText(this@MainActivity, R.string.press_back_again, Toast.LENGTH_SHORT).show()
                 }
             }
         })
-
 
         setSupportActionBar(binding.toolbar)
 
@@ -92,7 +85,6 @@ class MainActivity : AppCompatActivity() {
 
         // 2) NavigationView 메뉴 아이템 클릭 리스너 설정 (동적 메뉴 대응)
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
-            // 클릭된 메뉴 ID와 ViewModel 리스트 매칭
             mainViewModel.menuItems.value?.find { it.id == menuItem.itemId }?.let { item ->
                 mainViewModel.onMenuSelected(item)
             }
@@ -100,28 +92,31 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // 3) ViewModel 내비게이션 상태 관찰하여 프래그먼트 교체 또는 네비게이션 처리
+        // 3) ViewModel 내비게이션 상태 관찰
         mainViewModel.navigateTo.observe(this) { item ->
             item?.let {
-                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-                val navController = navHostFragment.navController
-
-                when (it.id) {
-                    1 -> navController.navigate(R.id.mainFragment)
-                    2 -> navController.navigate(R.id.drumFragment)
-                    3 -> navController.navigate(R.id.selfBeatFragment)
-                }
+                navigateTo(it.fragmentId)
                 mainViewModel.onNavigated()
             }
         }
+    }
 
-        // 초기 프래그먼트 설정 등 필요 시 추가
-        if (savedInstanceState == null) {
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-            val navController = navHostFragment.navController
-
-            navController.navigate(R.id.mainFragment)
+    // 메인은 백스택의 뿌리로 두고, 다른 화면은 메인 위에 하나만 올린다.
+    // 전에는 메뉴를 누를 때마다 navigate 로 새 인스턴스를 쌓아 메인→초견→메인→초견이 네 장 쌓였다.
+    private fun navigateTo(destinationId: Int) {
+        if (destinationId == R.id.mainFragment) {
+            goToMain()
+            return
         }
+        if (navController.currentDestination?.id == destinationId) return
+        navController.navigate(destinationId, null, navOptions {
+            launchSingleTop = true
+            popUpTo(R.id.mainFragment) { inclusive = false }
+        })
+    }
+
+    private fun goToMain() {
+        navController.popBackStack(R.id.mainFragment, false)
     }
 
     // 메뉴 동적 생성 함수
@@ -133,43 +128,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                // 홈 버튼 클릭 시 수행할 동작
-
-                // 예: 네비게이션 컨트롤러를 이용해 메인 프래그먼트로 이동
-                val navController =
-                    binding.navHostFragment.getFragment<NavHostFragment>().navController
-                navController.navigate(R.id.mainFragment)
-
-                // 드로어가 있다면 닫기 처리도 필요하면 추가
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun updateMetronomeVisibility(destinationId: Int) {
-        val menuItem = mainViewModel.menuItems.value?.find {
-            it.fragmentId == destinationId
-        }
+        val menuItem = mainViewModel.menuItems.value?.find { it.fragmentId == destinationId }
         if (menuItem?.showMetronome == true) {
             metronomeFragment.view?.visibility = View.VISIBLE
         } else {
             metronomeFragment.view?.visibility = View.GONE
             metronomeFragment.stopMetronome()
         }
+    }
+
+    companion object {
+        private const val BACK_PRESS_INTERVAL = 2000L
     }
 }
