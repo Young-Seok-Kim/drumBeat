@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 항목 id 는 nav_graph 의 destination id 와 같아야 NavigationUI 가 자동으로 연결한다 -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/drumFragment"
+        android:icon="@drawable/ic_tab_sightread"
+        android:title="@string/sightread" />
+    <item
+        android:id="@+id/selfBeatFragment"
+        android:icon="@drawable/ic_tab_bpm"
+        android:title="@string/measure_bpm" />
+</menu>

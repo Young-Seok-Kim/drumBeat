@@ -1,57 +1,47 @@
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
-    android:id="@+id/drawer_layout"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:background="@color/bd_bg_top">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!-- 앱 전체에서 하나만 쓰는 배너. 하단 탭과 떨어뜨리려고 맨 위에 둔다.
+         화면을 옮겨도 다시 요청하지 않아 바로 보인다. -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/ads_banner" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:elevation="6dp">
+    <!-- 초견 탭에서만 보이는 메트로놈 패널 -->
+    <fragment
+        android:id="@+id/metronome_fragment"
+        android:name="com.youngs.beatdrum.ui.metronome.MetronomeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:theme="@style/Theme.BeatDrum.Toolbar"
-                app:titleTextColor="@android:color/white"
-                android:title="@string/app_name" />
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <!-- FragmentContainerView: 네비게이션 호스트, weight=1 -->
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/nav_graph" />
-
-        <!-- 하단 고정 메트로놈 프래그먼트 -->
-        <fragment
-            android:id="@+id/metronome_fragment"
-            android:name="com.youngs.beatdrum.ui.metronome.MetronomeFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="288dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        app:headerLayout="@layout/nav_header"
-        app:itemTextColor="@color/bd_text_primary"
-        app:itemIconTint="@color/bd_primary" />
-</androidx.drawerlayout.widget.DrawerLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bd_surface"
+        app:elevation="8dp"
+        app:itemIconTint="@color/bd_nav_item"
+        app:itemTextColor="@color/bd_nav_item"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav" />
+</LinearLayout>

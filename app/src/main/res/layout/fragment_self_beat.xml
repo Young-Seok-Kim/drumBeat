@@ -1,55 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@drawable/bd_bg_gradient"
-    android:padding="24dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="16dp">
 
     <TextView
-        android:id="@+id/textViewBpm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="32sp"
-        android:textStyle="bold"
-        tools:visibility="visible"
-        tools:text="BPM : 130"
-        android:layout_marginTop="16dp" />
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/measure_bpm"
+        android:textColor="@color/bd_text_primary"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
-
-    <TextView
-        android:id="@+id/textViewInfo"
-        android:layout_width="wrap_content"
+    <!-- 결과 카드 -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/selfbeat_4click"
+        android:orientation="vertical"
         android:gravity="center"
-        android:textSize="18sp"
-        android:singleLine="false"
-        android:ellipsize="none"
-        android:scrollHorizontally="false"
-        android:layout_margin="24dp" />
+        android:background="@drawable/bd_card"
+        android:elevation="2dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="24dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
+        <TextView
+            android:id="@+id/textViewBpm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/selfbeat_bpm_placeholder"
+            android:textColor="@color/bd_primary"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            tools:text="120 BPM" />
+
+        <TextView
+            android:id="@+id/textViewInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/selfbeat_4click"
+            android:textColor="@color/bd_text_secondary"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonApply"
+            style="@style/BdButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/selfbeat_apply_to_metronome"
+            android:visibility="invisible"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 큰 탭 버튼. 손가락으로 치기 쉽게 화면 아래쪽에 크게 -->
     <Button
         android:id="@+id/buttonTap"
         style="@style/BdButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/selfbeat_tap"
-        android:textSize="20sp"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp"
-        android:layout_marginBottom="16dp"/>
-
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/ads_banner"/>
-
+        android:textSize="22sp"
+        android:paddingTop="56dp"
+        android:paddingBottom="56dp" />
 
 </LinearLayout>
